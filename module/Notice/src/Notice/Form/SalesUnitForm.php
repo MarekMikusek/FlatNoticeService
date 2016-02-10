@@ -9,6 +9,7 @@
 namespace Notice\Form;
 
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 
 class SalesUnitForm extends Form
 {
@@ -26,6 +27,11 @@ class SalesUnitForm extends Form
         $this->add([
             'name' => 'id',
             'type' => 'hidden'
+        ]);
+
+        $this->add([
+            'name'=>'isNew',
+            'type'=>'hidden'
         ]);
 
         $this->add(
@@ -51,7 +57,10 @@ class SalesUnitForm extends Form
 
         $this->add([
             'name'=>'price',
-            'type'=>'number'
+            'type'=>'number',
+            'options'=>[
+                'label'=>'Cena'
+            ]
         ]);
 
         $this->add(
@@ -67,19 +76,6 @@ class SalesUnitForm extends Form
             ]
         );
 
-        $this->add(
-            [
-                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-                'name' => 'type',
-                'options' => [
-                    'label' => 'Typ budynku',
-                    'object_manager' => $this->getObjectManager(),
-                    'target_class' => 'Notice\Model\Type',
-                    'property' => 'name',
-                ],
-            ]
-        );
-
         $this->add([
             'name' => 'area',
             'type' => 'number',
@@ -90,7 +86,7 @@ class SalesUnitForm extends Form
 
         $this->add([
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-            'name' => 'floorNumber',
+            'name' => 'floor',
             'required'=>true,
             'options' => [
                 'label' => 'Piętro',
@@ -161,18 +157,31 @@ class SalesUnitForm extends Form
                     'label' => 'Kategoria OTO Dom',
                     'object_manager' => $this->getObjectManager(),
                     'target_class' => 'notice\Model\CategoryOtodom',
-                    'property' => 'name',
+                    'property' => 'categoryName',
                 ],
             ]
         );
+//
+//        $this->add(
+//            [
+//                'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
+//                'name' => 'mediaSalesUnit',
+//                'options' => [
+//                    'label' => 'Dostępne media',
+//                    'object_manager' => $this->getObjectManager(),
+//                    'target_class' => 'Notice\Model\MediaSalesUnit',
+//                    'property' => 'mediaName',
+//                ],
+//            ]
+//        );
 
-        $this->add([
-            'name' => 'linkToPhoto',
-            'type' => 'text',
-            'options' => [
-                'label' => 'Link do fotografii'
-            ]
-        ]);
+//        $this->add([
+//            'name' => 'linkToPhoto',
+//            'type' => 'text',
+//            'options' => [
+//                'label' => 'Link do fotografii'
+//            ]
+//        ]);
 
 
         $this->add([
@@ -183,6 +192,15 @@ class SalesUnitForm extends Form
                 'id' => 'submitbutton'
             ]
         ]);
+
+//        $inputFilter = new InputFilter();
+//
+//        $inputFilter->add([
+//            'name' => 'linkToPhoto',
+//            'required' => false,
+//        ]);
+//
+//        $this->setInputFilter($inputFilter);
     }
 
     public

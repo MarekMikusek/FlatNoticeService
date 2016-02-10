@@ -11,6 +11,7 @@ namespace Notice\Form;
 use Zend\Form\Form;
 use Doctrine\Common\Persistence\ObjectManager;
 use Zend\InputFilter\InputFilter;
+use Zend\Form\Element\File as File ;
 
 class SiteForm extends Form
 {
@@ -29,20 +30,25 @@ class SiteForm extends Form
         ]);
 
         $this->add([
-            'name'=>'siteName',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Nazwa inwestycji'
+            'name' => 'siteName',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Nazwa inwestycji'
             ]
         ]);
 
-        $this->add([
-            'name' => 'country',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Kraj'
+        $this->add(
+            [
+                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+                'name' => 'country',
+                'options' => [
+                    'label' => 'Kraj',
+                    'object_manager' => $this->getObjectManager(),
+                    'target_class' => 'Notice\Model\Country',
+                    'property' => 'countryName',
+                ],
             ]
-        ]);
+        );
 
         $this->add(
             [
@@ -59,64 +65,64 @@ class SiteForm extends Form
 
 
         $this->add([
-            'name'=>'district',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Powiat'
+            'name' => 'district',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Powiat'
             ]
         ]);
 
         $this->add([
-            'name'=>'city',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Miasto'
+            'name' => 'city',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Miasto'
             ]
         ]);
 
         $this->add([
-            'name'=>'quarter',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Dzielnica'
+            'name' => 'quarter',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Dzielnica'
             ],
-            'attributes'=>[
-                'required'=>false,
+            'attributes' => [
+                'required' => false,
             ]
         ]);
 
         $this->add([
-            'name'=>'street',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Ulica'
+            'name' => 'street',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Ulica'
             ]
         ]);
 
         $this->add([
-            'name'=>'constructionYear',
-            'type'=>'number',
-            'options'=>[
-                'label'=>'Rok budowy'
+            'name' => 'constructionYear',
+            'type' => 'number',
+            'options' => [
+                'label' => 'Rok budowy'
             ]
         ]);
 
         $this->add([
-            'name'=>'latitude',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Szerokość geogr.'
+            'name' => 'latitude',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Szerokość geogr.'
             ],
         ]);
 
         $this->add([
-            'name'=>'longitude',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Długość geogr.'
+            'name' => 'longitude',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Długość geogr.'
             ],
-            'attributes'=>[
-                'required'=>false,
+            'attributes' => [
+                'required' => false,
             ]
         ]);
 
@@ -146,19 +152,10 @@ class SiteForm extends Form
             ]
         );
 
-        $this->add([
-            'name'=>'linkToPhoto',
-            'type'=>'file',
-            'options'=>[
-                'label'=>'Link do fotografii'
-            ]
-        ]);
-
         $this->add(
             [
                 'type' => 'DoctrineModule\Form\Element\ObjectSelect',
                 'name' => 'roofMaterial',
-                'required'=>false,
                 'options' => [
                     'label' => 'Materiał dachu',
                     'object_manager' => $this->getObjectManager(),
@@ -171,7 +168,6 @@ class SiteForm extends Form
         $this->add([
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'name' => 'numberOfFloors',
-            'required'=>true,
             'options' => [
                 'label' => 'Ilość pięter',
                 'object_manager' => $this->getObjectManager(),
@@ -180,25 +176,24 @@ class SiteForm extends Form
             ],
         ]);
 
-        $this->add(
-            [
-                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
-                'name' => 'mediaMask',
-                'required'=>false,
-                'options' => [
-                    'label' => 'Dostępne media',
-                    'object_manager' => $this->getObjectManager(),
-                    'target_class' => 'Notice\Model\SecurityMask',
-                    'property' => 'securityName',
-                ],
-            ]
-        );
+//        $this->add(
+//            [
+//                'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
+//                'name' => 'mediaSite',
+//                'options' => [
+//                    'label' => 'Dostępne media',
+//                    'object_manager' => $this->getObjectManager(),
+//                    'target_class' => 'Notice\Model\MediaSite',
+//                    'property' => 'mediaName',
+//                ],
+//            ]
+//        );
 
         $this->add(
             [
-                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+                'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
                 'name' => 'securityMask',
-                'required'=>false,
+                'required' => false,
                 'options' => [
                     'label' => 'Zabezpieczenia',
                     'object_manager' => $this->getObjectManager(),
@@ -213,7 +208,7 @@ class SiteForm extends Form
                 'type' => 'DoctrineModule\Form\Element\ObjectSelect',
                 'name' => 'buildingMaterial',
                 'options' => [
-                    'label' => 'Materiał konstrukcyjny',
+                    'label' => 'Materiał ścian',
                     'object_manager' => $this->getObjectManager(),
                     'target_class' => 'Notice\Model\BuildingMaterial',
                     'property' => 'material',
@@ -222,11 +217,11 @@ class SiteForm extends Form
         );
 
         $this->add([
-            'name'=>'submit',
-            'type'=>'Submit',
-            'attributes'=>[
-                'value'=>'Go',
-                'id'=>'submitbutton'
+            'name' => 'submit',
+            'type' => 'Submit',
+            'attributes' => [
+                'value' => 'Go',
+                'id' => 'submitbutton'
             ]
         ]);
         $inputFilter = new InputFilter();
@@ -236,14 +231,12 @@ class SiteForm extends Form
             'required' => false
         ]);
         $inputFilter->add([
-            'name' => 'title',
+            'name' => 'latitude',
             'required' => false,
         ]);
 
         $this->setInputFilter($inputFilter);
     }
-
-
 
     public function setObjectManager(ObjectManager $objectManager)
     {

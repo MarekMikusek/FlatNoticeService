@@ -26,7 +26,8 @@ class Site
     public $siteName;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\ManyToOne(targetEntity="country")
+     * @ORM\JoinColumn(name="country", referencedColumnName="id")
      */
     public $country;
 
@@ -82,11 +83,6 @@ class Site
     /**
      * @ORM\Column(type="text")
      */
-    public $linkToPhoto;
-
-    /**
-     * @ORM\Column(type="text")
-     */
     public $roofMaterial;
 
     /**
@@ -111,23 +107,23 @@ class Site
      */
     public $heating;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="mediaMask")
-     * @ORM\JoinTable(name="sites_medias",
-     *     joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
-     *     )
-     */
-    public $medias;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="securityMask")
-     * @ORM\JoinTable(name="sites_securities",
-     *      joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="security_id", referencedColumnName="id")}
-     *  )
-     */
-    public $securities;
+//    /**
+//     * @ORM\ManyToMany(targetEntity="mediaSite")
+//     * @ORM\JoinTable(name="sites_medias",
+//     *     joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
+//     *     inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
+//     *     )
+//     */
+//    public $medias;
+//
+//    /**
+//     * @ORM\ManyToMany(targetEntity="securityMask")
+//     * @ORM\JoinTable(name="sites_securities",
+//     *      joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
+//     *      inverseJoinColumns={@ORM\JoinColumn(name="security_id", referencedColumnName="id")}
+//     *  )
+//     */
+//    public $securities;
 
     /**
      * @ORM\ManyToOne(targetEntity="fence")
@@ -331,22 +327,6 @@ class Site
     public function setCategotyIdOtodom($categotyIdOtodom)
     {
         $this->categotyIdOtodom = $categotyIdOtodom;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLinkToPhoto()
-    {
-        return $this->linkToPhoto;
-    }
-
-    /**
-     * @param mixed $linkToPhoto
-     */
-    public function setLinkToPhoto($linkToPhoto)
-    {
-        $this->linkToPhoto = $linkToPhoto;
     }
 
     /**

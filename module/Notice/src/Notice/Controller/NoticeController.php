@@ -2,6 +2,7 @@
 
 namespace Notice\Controller;
 
+use Notice\Model\SalesUnit;
 use Zend\Form\Form;
 use Zend\View\Model\ViewModel;
 use Zend\Hydrator;
@@ -216,6 +217,47 @@ class NoticeController extends AbstractNoticeController
 
         $filter = new Compress('Zip');
         return $filter->filter($testData);
+    }
+
+    public function headerDomiporta()
+    {
+        return
+'<?xml version="1.0" encoding="UTF-8"?>
+<Domiporta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespacesSchemaLocation="domiporta.xsd">
+   <Informacje>
+      <RodzajPaczki>przyrost</RodzajPaczki>
+      <Program>Eksport z www</Program>
+      <WersjaProgramu>1.0</WersjaProgramu>
+   </Informacje>
+   <Oferty>
+      <Nieruchomości>';
+    }
+
+    public function prepareOfferForDomiporta(SalesUnit $salesUnit)
+    {
+        echo ('<Oferta>');
+        $this->writeLn('ID',$id);
+        echo ('</Oferta>');
+    }
+
+    public function footerDomiporta()
+    {
+        return
+'      </Nieruchomości>
+   </Oferty>
+';
+    }
+
+    public function preparePartForDomiporta(SalesUnit $salesUnit, $id)
+    {
+        $this->headerForDomiporta();
+
+        $this->footerDomiporta();
+    }
+
+    public function writeLn($tag, $content)
+    {
+        return "<".$tag.">".$content."</".$tag.">";
     }
 
     public function sendToGumtreeAction()

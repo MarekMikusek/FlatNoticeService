@@ -37,12 +37,12 @@ class SalesUnit
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id")
      */
     public $site;
-
-    /** typ nieruchomości: mieszkanie, dom, itd
-     * @ORM\ManyToOne(targetEntity="type")
-     * @ORM\joinColumn(name="type", referencedColumnName="id")
-     */
-    public $type;
+//
+//    /** typ nieruchomości: mieszkanie, dom, itd
+//     * @ORM\ManyToOne(targetEntity="type")
+//     * @ORM\joinColumn(name="type", referencedColumnName="id")
+//     */
+//    public $type;
 
     /**
      * @ORM\Column(type="float")
@@ -80,23 +80,27 @@ class SalesUnit
     public $floor;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    protected $linkToPhoto;
-
-    /**
      * @ORM\Column(type="date")
      */
     protected $availableFrom;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="extras")
-     * @ORM\JoinTable(name="sites_extras",
-     *      joinColumns={@ORM\JoinColumn(name="salesUnit_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="extras_id", referencedColumnName="id")}
-     *  )
-     */
-    public $extras;
+//
+//    /**
+//     * @ORM\ManyToMany(targetEntity="extras")
+//     * @ORM\JoinTable(name="sites_extras",
+//     *      joinColumns={@ORM\JoinColumn(name="salesUnit_id", referencedColumnName="id")},
+//     *      inverseJoinColumns={@ORM\JoinColumn(name="extras_id", referencedColumnName="id")}
+//     *  )
+//     */
+//    public $extras;
+//
+//    /**
+//     * @ORM\ManyToMany(targetEntity="mediaSalesUnit")
+//     * @ORM\JoinTable(name="salesunits_medias",
+//     *     joinColumns={@ORM\JoinColumn(name="salesunit_id", referencedColumnName="id")},
+//     *     inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
+//     *     )
+//     */
+//    public $medias;
 
     public function __construct()
     {
@@ -122,18 +126,67 @@ class SalesUnit
     /**
      * @return mixed
      */
-    public function getUserId()
+    public function getTitle()
     {
-        return $this->userId;
+        return $this->title;
     }
 
     /**
-     * @param mixed $userId
+     * @param mixed $title
      */
-    public function setUserId($userId)
+    public function setTitle($title)
     {
-        $this->userId = $userId;
+        $this->title = $title;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExtras()
+    {
+        return $this->extras;
+    }
+
+    /**
+     * @param mixed $extras
+     */
+    public function setExtras($extras)
+    {
+        $this->extras = $extras;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMedias()
+    {
+        return $this->medias;
+    }
+
+    /**
+     * @param mixed $medias
+     */
+    public function setMedias($medias)
+    {
+        $this->medias = $medias;
+    }
+
 
     /**
      * @return mixed
@@ -277,22 +330,6 @@ class SalesUnit
     public function setFloor($floor)
     {
         $this->floor = $floor;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLinkToPhoto()
-    {
-        return $this->linkToPhoto;
-    }
-
-    /**
-     * @param mixed $linkToPhoto
-     */
-    public function setLinkToPhoto($linkToPhoto)
-    {
-        $this->linkToPhoto = $linkToPhoto;
     }
 
     /**

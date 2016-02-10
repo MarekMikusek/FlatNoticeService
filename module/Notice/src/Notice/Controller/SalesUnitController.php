@@ -28,15 +28,14 @@ class SalesUnitController  extends AbstractNoticeController
     {
         $form = $this->createForm('Notice\\Form\\' . $this->entityName . 'Form');
         $form->get('submit')->setValue('Dodaj');
-        if ($form->get('country')->getValue() == NULL){
-            $form->get('country')->setValue('Polska');
-        }
+
         $request = $this->getRequest();
 
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $dataToAdd = $form->getData();
+                $form->isNew = true;
                 $noticeService = $this->getServiceLocator()->get('NoticeService');
                 $noticeService->insertData($dataToAdd);
                 return $this->redirect()->toRoute('notice', ['controller' => $this->controllerName, 'action' => 'index']);
