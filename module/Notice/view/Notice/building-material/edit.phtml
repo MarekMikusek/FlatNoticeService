@@ -1,0 +1,9 @@
+<?php
+
+$title = 'Edycja Materiału budowlanego';
+$this->headTitle($title);
+?>
+    <h1><?= $this->escapeHtml($title) ?></h1>
+<?php
+/** @var \Notice\Form\BuildingMaterialForm $form */
+echo $this->form($form);

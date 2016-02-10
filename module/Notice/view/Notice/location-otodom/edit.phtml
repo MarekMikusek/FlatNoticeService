@@ -1,0 +1,9 @@
+<?php
+
+$title = 'Edycja Lokalizacji wg Otodom';
+$this->headTitle($title);
+?>
+    <h1><?= $this->escapeHtml($title) ?></h1>
+<?php
+/** @var \Notice\Form\LocationOtodomForm $form */
+echo $this->form($form);

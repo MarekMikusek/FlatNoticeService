@@ -1,0 +1,27 @@
+<?php
+
+$title = 'Usuń użytkownika';
+$this->headTitle($title);
+
+$controllerName = 'user';
+
+?><h1><?php $this->escapeHtml($title) ?> </h1>
+<p>
+    Czy chcesz usunąć wpis:
+</p>
+<h3>
+    <?php echo $this->escapeHtml($dataToDelete->userName) ?>
+</h3>
+<?php
+$url = $this->url('notice', [
+    'controller' => $controllerName,
+    'action' => 'delete',
+    'id' => $dataToDelete->id
+]);
+?>
+<form method="post" action="<?= $url; ?>">
+    <div>
+        <input type="submit" name="del" value="Yes">
+        <input type="submit" name="del" value="No">
+    </div>
+</form>

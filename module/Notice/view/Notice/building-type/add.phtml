@@ -1,0 +1,10 @@
+<?php
+
+$title = 'Dodaj nowy Rodzaj nieruchomości:';
+$this->headTitle($title);
+?>
+    <h1><?= $this->escapeHtml($title) ?></h1>
+<?php
+/** @var \Notice\Form\BuildingTypeForm $form */
+
+echo $this->form($form);

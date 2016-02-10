@@ -1,0 +1,25 @@
+<?php
+
+$title = 'Usuń materiał Rodzaj nieruchomości';
+$this->headTitle($title);
+
+?><h1><?php $this->escapeHtml($title) ?> </h1>
+<p>
+    Czy chcesz usunąć wpis:
+</p>
+<h3>
+    <?php echo $this->escapeHtml($dataToDelete->type) ?>
+</h3>
+<?php
+$url = $this->url('notice', [
+    'controller' => 'building-type',
+    'action' => 'delete',
+    'id' => $dataToDelete->id
+]);
+?>
+<form method="post" action="<?= $url; ?>">
+    <div>
+        <input type="submit" name="del" value="Yes">
+        <input type="submit" name="del" value="No">
+    </div>
+</form>
