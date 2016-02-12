@@ -1,0 +1,25 @@
+<?php
+
+$title = 'Usuń materiał budowlany';
+$this->headTitle($title);
+
+?><h1><?php $this->escapeHtml($title) ?> </h1>
+<p>
+    Czy chcesz usunąć materiał:
+</p>
+<h3>
+    <?php echo $this->escapeHtml($dataToDelete->material) ?>
+</h3>
+<?php
+$url = $this->url('notice', [
+    'controller' => 'building-material',
+    'action' => 'delete',
+    'id' => $dataToDelete->id
+]);
+?>
+<form method="post" action="<?= $url; ?>">
+    <div>
+        <input type="submit" name="del" value="Yes">
+        <input type="submit" name="del" value="No">
+    </div>
+</form>

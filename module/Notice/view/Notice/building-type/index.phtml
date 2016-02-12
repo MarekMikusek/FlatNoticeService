@@ -1,0 +1,37 @@
+<?php
+
+$title = 'Zarządzaj kategorią: Rodzaje nieruchomości';
+$this->headTitle($title);
+$controllerName = 'building-type';
+
+?>
+
+<h1>
+    <?= $this->escapeHtml($title);
+    ?>
+</h1>
+<p>
+    <a href="<?= $this->url('notice', ['controller' => $controllerName, 'action' => 'add']) ?>" class="btn btn-info">
+        Dodaj nowy wpis</a>
+
+    <a href="<?= $this->url('notice', ['action' => 'index']) ?>" class="btn btn-info">Powrót na stronę główną</a>
+</p>
+<table class="table">
+    <tr>
+        <th>Nazwa</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php foreach ($returnData as $row) : ?>
+        <tr>
+            <td><?= $this->escapeHtml($row->type) ?></td>
+            <td>
+                <a href="<?= $this->url('notice', ['controller' => $controllerName, 'action' => 'edit',
+                    'id' => $row->id]) ?>">Edit</a>
+            </td>
+            <td>
+                <a href="<?= $this->url('notice', ['controller' => $controllerName, 'action' => 'delete',
+                    'id' => $row->id]) ?>">Delete</a>
+            </td>
+        </tr>
+
+    <?php endforeach; ?>

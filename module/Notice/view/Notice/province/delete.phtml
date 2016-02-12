@@ -1,0 +1,27 @@
+<?php
+
+$title = 'Usuń województwo';
+$this->headTitle($title);
+
+$controllerName = 'province';
+
+?><h1><?php $this->escapeHtml($title) ?> </h1>
+<p>
+    Czy chcesz usunąć województwo:
+</p>
+<h3>
+    <?php echo $this->escapeHtml($dataToDelete->provinceName) ?>
+</h3>
+<?php
+$url = $this->url('notice', [
+    'controller' => $controllerName,
+    'action' => 'delete',
+    'id' => $dataToDelete->id
+]);
+?>
+<form method="post" action="<?= $url; ?>">
+    <div>
+        <input type="submit" name="del" value="Yes">
+        <input type="submit" name="del" value="No">
+    </div>
+</form>
