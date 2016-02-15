@@ -15,12 +15,14 @@ class NoticeController extends AbstractNoticeController
     private $entityName = 'Notice';
     private $controllerName = 'notice';
 
-    public function insertData($dataToInsert)
+    public function insertData($tag,$dataToInsert)
     {
-        $return = '';
+        $tag = ucfirst($tag);
+        $return = '<'.$tag.'>\r\n';
         foreach ($dataToInsert as $data) {
             $return .= "<value>" . $data . "</value>\r\n";
         }
+        $return.= '</'.$tag.'>\r\n';
         return $return;
     }
 
@@ -32,10 +34,8 @@ class NoticeController extends AbstractNoticeController
             $this->writeLn('BuildinMaterial', $salesUnit->getSite()->getBildingMaterial()->getNameOtodom()) .
             $this->writeLn('BuildingOwnership', $salesUnit->getSite()->get) .
             $this->writeLn('FloorNo', $salesUnit->getFloor()) .
-            "<ExtrasMask>\r\n" .
-            $this->insertData($this->getExtras()) .
-            "</ExtrasMask>\r\n
-        </FlatDetails>\r\n";
+            $this->insertData('ExtraMask',$this->getExtras()) .
+            "</FlatDetails>\r\n";
 
         return $return;
     }
@@ -51,7 +51,8 @@ class NoticeController extends AbstractNoticeController
             $this->writeLn('Type',0).
             $this->writeLn('FloorsNum',$salesUnit->getSite()->getNumberOfFloors()).
             $this->writeLn('RoomsNum',$salesUnit->get()).
-            $this->writeLn('GarretType',$salesUnit->get()).
+            $this->writeLn('GarretType',$salesUnit->getGarretType()->getOtodom()).
+            $this->writeLn('WindowsType',$salesUnit->getWindows()->getOtodom()).
 
             $this->writeLn('BuildingOwnership', $salesUnit->getSite()->get) .
             $this->writeLn('FloorNo', $salesUnit->getFloor()) .
