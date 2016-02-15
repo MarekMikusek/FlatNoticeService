@@ -109,9 +109,12 @@ class Site
 
     /**
      * @ORM\ManyToOne(targetEntity="heating")
-     * @ORM\JoinColumn(name="heating", referencedColumnName="id")
+     * @ORM\JoinTable(name="sites_heatings",
+     *     joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="heating_id", referencedColumnName="id")}
+     *     )
      */
-    public $heating;
+    public $heatings;
 
     /**
      * @ORM\ManyToMany(targetEntity="medium")
@@ -123,7 +126,7 @@ class Site
     public $medias;
 
     /**
-     * @ORM\ManyToMany(targetEntity="securityMask")
+     * @ORM\ManyToMany(targetEntity="security")
      * @ORM\JoinTable(name="sites_securities",
      *      joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="security_id", referencedColumnName="id")}
@@ -132,10 +135,61 @@ class Site
     public $securities;
 
     /**
-     * @ORM\ManyToOne(targetEntity="fence")
-     * @ORM\JoinColumn(name="fence", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="fence")
+     * @ORM\JoinTable(name="sites_fences",
+     *      joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="fence_id", referencedColumnName="id")}
+     *     )
      */
-    public $fence;
+    public $fences;
+
+    public function addHeatings(Collection $heatings){
+        foreach($heatings as $heating){
+            $this->heatings->add($heating);
+        }
+    }
+
+    public function removeHeatings(Collection $heatings){
+        foreach($heatings as $heating){
+            $this->heatings->removeElement($heating);
+        }
+    }
+
+    public function addMedias(Collection $medias){
+        foreach($medias as $medium){
+            $this->medias->add($medium);
+        }
+    }
+
+    public function removeMedias(Collection $medias){
+        foreach($medias as $medium){
+            $this->extras->removeElement($medium);
+        }
+    }
+
+    public function addSecurities(Collection $securities){
+        foreach($securities as $security){
+            $this->securities->add($security);
+        }
+    }
+
+    public function removeSecurities(Collection $securities){
+        foreach($securities as $security){
+            $this->securities->removeElement($security);
+        }
+    }
+
+    public function addFences(Collection $fences){
+        foreach($fences as $fence){
+            $this->fences->add($fence);
+        }
+    }
+
+    public function removeFences(Collection $fences){
+        foreach($fences as $fence){
+            $this->fences->removeElement($fence);
+        }
+    }
 
     public function __construct()
     {

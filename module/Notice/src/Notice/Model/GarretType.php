@@ -5,11 +5,11 @@ namespace Notice\Model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class SecurityMask
+ * Class GarretType
  * @package Notice\Model
  * @ORM\Entity
  */
-class Security
+class GarretType
 {
     /**
      * @ORM\Id
@@ -21,12 +21,12 @@ class Security
     /**
      * @ORM\Column(type="text")
      */
-    public $securityName;
+    public $typeName;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $Otodom;
+    public $otodom;
 
     /**
      * @return mixed
@@ -47,17 +47,17 @@ class Security
     /**
      * @return mixed
      */
-    public function getSecurityName()
+    public function getTypeName()
     {
-        return $this->securityName;
+        return $this->typeName;
     }
 
     /**
-     * @param mixed $securityName
+     * @param mixed $typeName
      */
-    public function setSecurityName($securityName)
+    public function setTypeName($typeName)
     {
-        $this->securityName = $securityName;
+        $this->typeName = $typeName;
     }
 
     /**
@@ -65,15 +65,15 @@ class Security
      */
     public function getOtodom()
     {
-        return $this->Otodom;
+        return $this->otodom;
     }
 
     /**
-     * @param mixed $Otodom
+     * @param mixed $otodom
      */
-    public function setOtodom($Otodom)
+    public function setOtodom($otodom)
     {
-        $this->Otodom = $Otodom;
+        $this->otodom = $otodom;
     }
 
 }

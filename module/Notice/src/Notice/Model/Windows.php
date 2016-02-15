@@ -5,11 +5,11 @@ namespace Notice\Model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class SecurityMask
+ * Class Windows
  * @package Notice\Model
  * @ORM\Entity
  */
-class Security
+class Windows
 {
     /**
      * @ORM\Id
@@ -21,12 +21,12 @@ class Security
     /**
      * @ORM\Column(type="text")
      */
-    public $securityName;
+    public $windowsMaterial;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $Otodom;
+    public $otodom;
 
     /**
      * @return mixed
@@ -47,17 +47,17 @@ class Security
     /**
      * @return mixed
      */
-    public function getSecurityName()
+    public function getWindowsMaterial()
     {
-        return $this->securityName;
+        return $this->windowsMaterial;
     }
 
     /**
-     * @param mixed $securityName
+     * @param mixed $windowsMaterial
      */
-    public function setSecurityName($securityName)
+    public function setWindowsMaterial($windowsMaterial)
     {
-        $this->securityName = $securityName;
+        $this->windowsMaterial = $windowsMaterial;
     }
 
     /**
@@ -65,15 +65,15 @@ class Security
      */
     public function getOtodom()
     {
-        return $this->Otodom;
+        return $this->otodom;
     }
 
     /**
-     * @param mixed $Otodom
+     * @param mixed $otodom
      */
-    public function setOtodom($Otodom)
+    public function setOtodom($otodom)
     {
-        $this->Otodom = $Otodom;
+        $this->otodom = $otodom;
     }
 
 }

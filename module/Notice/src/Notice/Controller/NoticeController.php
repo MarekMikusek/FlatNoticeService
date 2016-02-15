@@ -15,71 +15,94 @@ class NoticeController extends AbstractNoticeController
     private $entityName = 'Notice';
     private $controllerName = 'notice';
 
-    public function insertExtraMasks()
+    public function insertData($dataToInsert)
     {
-        
+        $return = '';
+        foreach ($dataToInsert as $data) {
+            $return .= "<value>" . $data . "</value>\r\n";
+        }
+        return $return;
     }
-    
+
     public function insertFlatDetailsOtodom($salesUnit)
     {
-        $return=
-        "<FlatDetails>\r\n".
-            $this->writeLn('BuildingType',$salesUnit->getType()->getNameOtodom())."\r\n".
-            $this->writeLn('BuildinMaterial',$salesUnit->getSite()->getBildingMaterial()->getNameOtodom())."\r\n".
-            $this->writeLn('BuildingOwnership',$salesUnit->getSite()->get)."\r\n".
-            $this->writeLn('FloorNo',$salesUnit->getFloor())."\r\n".
- //           $this->writeLn('ExtrasMask')."\r\n".
-//            $this->writeLn('',$salesUnit->)."\r\n".
-//            $this->writeLn('',$salesUnit->)."\r\n".
-        "<\FlatDetails>\r\n";
+        $return =
+            "<FlatDetails>\r\n" .
+            $this->writeLn('BuildingType', $salesUnit->getType()->getNameOtodom()) .
+            $this->writeLn('BuildinMaterial', $salesUnit->getSite()->getBildingMaterial()->getNameOtodom()) .
+            $this->writeLn('BuildingOwnership', $salesUnit->getSite()->get) .
+            $this->writeLn('FloorNo', $salesUnit->getFloor()) .
+            "<ExtrasMask>\r\n" .
+            $this->insertData($this->getExtras()) .
+            "</ExtrasMask>\r\n
+        </FlatDetails>\r\n";
 
         return $return;
     }
 
     public function insertHouseDetailsOtodom($salesUnit)
     {
+        $return =
+            "<FlatDetails>\r\n" .
+            $this->writeLn('BuildingType', $salesUnit->getType()->getNameOtodom()) .
+            $this->writeLn('TerrainArea', $salesUnit->getLandArea()).
+            $this->writeLn('ConstructionStatus', $salesUnit->getConstructionStatus()->getOtodom()).
+            $this->writeLn('BuildYear', $salesUnit->getSite()->getConstructionYear()).
+            $this->writeLn('Type',0).
+            $this->writeLn('FloorsNum',$salesUnit->getSite()->getNumberOfFloors()).
+            $this->writeLn('RoomsNum',$salesUnit->get()).
+            $this->writeLn('GarretType',$salesUnit->get()).
 
+            $this->writeLn('BuildingOwnership', $salesUnit->getSite()->get) .
+            $this->writeLn('FloorNo', $salesUnit->getFloor()) .
+            "<ExtrasMask>\r\n" .
+            $this->insertData($this->getExtras()) .
+            "</ExtrasMask>\r\n
+        </FlatDetails>\r\n";
+
+        return $return;
     }
 
     public function insertCommercialPropertyDetails($salesUnit)
     {
 
     }
+
     public function prepareOneOfferForOtodomAction(SalesUnit $salesUnit)
     {
         $offerContent =
-            "<Insertion>\r\n".
-            $this->writeLn('ID',$salesUnit->getOfferNumber())."\r\n".
-            $this->writeLn('Action',0)."\r\n".
-            $this->writeLn('Country',$salesUnit->getSite()->getCountry()->getOtodom())."\r\n".
-            $this->writeLn('Province',$salesUnit->getSite()->getProvince()->getOtodom())."\r\n".
-            $this->writeLn('City',$salesUnit->getSite()->getCity())."\r\n".
-            $this->writeLn('Quarter',$salesUnit->getSite()->getQuarter())."\r\n".
-            $this->writeLn('Street',$salesUnit->getSite()->getStreet())."\r\n".
-            $this->writeLn('Price',$salesUnit->getPrice())."\r\n".
-            $this->writeLn('PriceCurrency',1)."\r\n".
-            $this->writeLn('Area',$salesUnit->getArea())."\r\n".
-            $this->writeLn('MarketType',0)."\r\n".
-            $this->writeLn('ObjectName',$salesUnit->getType()->getNameOtodom())."\r\n".
-            $this->writeLn('OfferType',0)."\r\n".
-            $this->writeLn('Agent',$salesUnit->getUser()->getLicence())."\r\n";
-            switch ($salesUnit->getType()->getName()){
-                case 'mieszkanie':
-                    $this->insertFlatDetailsOtodom($salesUnit);
-                    break;
-                case 'dom':
-                    $this->insertHouseDetailsOtodom($salesUnit);
-                    break;
-                case 'lokal użytkowy':
-                    $this->insertCommercialPropertyDetails($salesUnit);
-                    break;
-            };
+            "<Insertion>\r\n" .
+            $this->writeLn('ID', $salesUnit->getOfferNumber()) .
+            $this->writeLn('Action', 0) .
+            $this->writeLn('Country', $salesUnit->getSite()->getCountry()->getOtodom()) .
+            $this->writeLn('Province', $salesUnit->getSite()->getProvince()->getOtodom()) .
+            $this->writeLn('City', $salesUnit->getSite()->getCity()) .
+            $this->writeLn('Quarter', $salesUnit->getSite()->getQuarter()) .
+            $this->writeLn('Street', $salesUnit->getSite()->getStreet()) .
+            $this->writeLn('Price', $salesUnit->getPrice()) .
+            $this->writeLn('PriceCurrency', 1) .
+            $this->writeLn('Area', $salesUnit->getArea()) .
+            $this->writeLn('MarketType', 0) .
+            $this->writeLn('ObjectName', $salesUnit->getType()->getNameOtodom()) .
+            $this->writeLn('OfferType', 0) .
+            $this->writeLn('Agent', $salesUnit->getUser()->getLicence());
+        switch ($salesUnit->getType()->getName()) {
+            case 'mieszkanie':
+                $this->insertFlatDetailsOtodom($salesUnit);
+                break;
+            case 'dom':
+                $this->insertHouseDetailsOtodom($salesUnit);
+                break;
+            case 'lokal użytkowy':
+                $this->insertCommercialPropertyDetails($salesUnit);
+                break;
+        };
 
 
-//            $this->writeLn('',$salesUnit->)."\r\n".
-//            $this->writeLn('',$salesUnit->)."\r\n".
-//            $this->writeLn('',$salesUnit->)."\r\n".
-//            $this->writeLn('',$salesUnit->)."\r\n".
+//            $this->writeLn('',$salesUnit->).
+//            $this->writeLn('',$salesUnit->).
+//            $this->writeLn('',$salesUnit->).
+//            $this->writeLn('',$salesUnit->).
 //
 //            "</Insertion>"
 
@@ -96,11 +119,11 @@ class NoticeController extends AbstractNoticeController
                 <Date>' . $this->getCurrentDate() . '</Date>
                 <ImportType>full</ImportType>
                 <Insertions>';
-                    $fileContent .= '';
-                    foreach ($unitsToAdd as $unit) {
-                        $fileContent .= $this->prepareOneOfferForOtodom($unit);
-                    }
-                    $fileContent .= '</Insertion>\r\n
+        $fileContent .= '';
+        foreach ($unitsToAdd as $unit) {
+            $fileContent .= $this->prepareOneOfferForOtodom($unit);
+        }
+        $fileContent .= '</Insertion>\r\n
                 </Insertions>\r\n
             </otoDom>';
         var_dump($fileContent);
@@ -396,6 +419,7 @@ class NoticeController extends AbstractNoticeController
 
         $this->footerDomiporta();
     }
+
 
     public function writeLn($tag, $content)
     {

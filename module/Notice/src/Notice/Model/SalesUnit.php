@@ -56,6 +56,17 @@ class SalesUnit
     public $site;
 
     /**
+     * @ORM\ManyToOne(targetEntity="constructionStatus")
+     * @ORM\JoinColumn(name="constructionStatus_id", referencedColumnName="id")
+     */
+    public $constructionStatus;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    public $landArea;
+
+    /**
      * @ORM\Column(type="float")
      */
     public $area;
@@ -63,12 +74,18 @@ class SalesUnit
     /**
      * @ORM\Column(type="smallint")
      */
-    public $noOfRooms;
+    public $numberOfRooms;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    public $noOfBathrooms;
+    public $numberOfBathrooms;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="GarretType")
+     * @ORM\JoinColumn(name="garretType_id", referencedColumnName="id")
+     */
+    public $garretType;
 
     /**
      * @ORM\Column(type="boolean")
@@ -101,7 +118,6 @@ class SalesUnit
      * @ORM\JoinColumn(name="noise_id", referencedColumnName="id")
      */
     protected $noise;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="extra")
@@ -202,6 +218,22 @@ class SalesUnit
     /**
      * @return mixed
      */
+    public function getConstructionStatus()
+    {
+        return $this->constructionStatus;
+    }
+
+    /**
+     * @param mixed $constructionStatus
+     */
+    public function setConstructionStatus($constructionStatus)
+    {
+        $this->constructionStatus = $constructionStatus;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getExtras()
     {
         return $this->extras;
@@ -278,6 +310,22 @@ class SalesUnit
     public function setArea($area)
     {
         $this->area = $area;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLandArea()
+    {
+        return $this->landArea;
+    }
+
+    /**
+     * @param mixed $landArea
+     */
+    public function setLandArea($landArea)
+    {
+        $this->landArea = $landArea;
     }
 
     /**

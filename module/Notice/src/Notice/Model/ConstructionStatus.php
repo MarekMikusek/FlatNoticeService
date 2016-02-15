@@ -1,15 +1,21 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Marek
+ * Date: 2016-02-15
+ * Time: 13:18
+ */
 
 namespace Notice\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class SecurityMask
+ * Class ConstructionStatus
  * @package Notice\Model
  * @ORM\Entity
  */
-class Security
+class ConstructionStatus
 {
     /**
      * @ORM\Id
@@ -21,12 +27,12 @@ class Security
     /**
      * @ORM\Column(type="text")
      */
-    public $securityName;
+    public $statusName;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $Otodom;
+    public $otodom;
 
     /**
      * @return mixed
@@ -37,27 +43,19 @@ class Security
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return mixed
      */
-    public function getSecurityName()
+    public function getStatusName()
     {
-        return $this->securityName;
+        return $this->statusName;
     }
 
     /**
-     * @param mixed $securityName
+     * @param mixed $statusName
      */
-    public function setSecurityName($securityName)
+    public function setStatusName($statusName)
     {
-        $this->securityName = $securityName;
+        $this->statusName = $statusName;
     }
 
     /**
@@ -65,15 +63,16 @@ class Security
      */
     public function getOtodom()
     {
-        return $this->Otodom;
+        return $this->otodom;
     }
 
     /**
-     * @param mixed $Otodom
+     * @param mixed $otodom
      */
-    public function setOtodom($Otodom)
+    public function setOtodom($otodom)
     {
-        $this->Otodom = $Otodom;
+        $this->otodom = $otodom;
     }
+
 
 }

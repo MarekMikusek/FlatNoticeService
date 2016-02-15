@@ -104,6 +104,14 @@ class SalesUnitForm extends Form
         ]);
 
         $this->add([
+            'name' => 'landArea',
+            'type' => 'number',
+            'options' => [
+                'label' => 'Powierzchnia działki',
+            ]
+        ]);
+
+        $this->add([
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'name' => 'floor',
             'required' => true,
@@ -116,7 +124,7 @@ class SalesUnitForm extends Form
         ]);
 
         $this->add([
-            'name' => 'noOfRooms',
+            'name' => 'numberOfRooms',
             'type' => 'number',
             'options' => [
                 'label' => 'Ilość pokoi'
@@ -124,7 +132,7 @@ class SalesUnitForm extends Form
         ]);
 
         $this->add([
-            'name' => 'noOfBathrooms',
+            'name' => 'numberOfBathrooms',
             'type' => 'number',
             'options' => [
                 'label' => 'Ilość łazienek'

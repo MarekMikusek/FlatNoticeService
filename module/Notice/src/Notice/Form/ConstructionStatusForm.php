@@ -1,14 +1,21 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Marek
+ * Date: 2016-02-15
+ * Time: 13:21
+ */
 
 namespace Notice\Form;
 
 use Zend\Form\Form;
 
-class SecurityMaskForm
+class ConstructionStatusForm extends Form
 {
+
     public function __construct($name = NULL)
     {
-        parent::__construct('securityMask');
+        parent::__construct('constructionStatus');
     }
 
     public function init()
@@ -19,18 +26,18 @@ class SecurityMaskForm
         ]);
 
         $this->add([
-            'name' => 'securityName',
+            'name' => 'statusName',
             'type'=>'text',
             'options'=>[
-                'label'=>'Nazwa zabezpieczenia'
+                'label'=>'Stan budowy'
             ]
         ]);
 
         $this->add([
-            'name'=>'Otodom',
+            'name' => 'otodom',
             'type'=>'integer',
             'options'=>[
-                'label'=>'Oznaczenie wg Otodom'
+                'label'=>'Nazwa wg Otodom'
             ]
         ]);
 
@@ -43,4 +50,5 @@ class SecurityMaskForm
             ]
         ]);
     }
+
 }
