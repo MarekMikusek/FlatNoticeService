@@ -2,6 +2,7 @@
 
 namespace Notice\Controller;
 
+use FtpClient\FtpClient;
 use Notice\Model\SalesUnit;
 use Zend\Filter\Compress;
 use Zend\Form\Element\Date;
@@ -15,14 +16,25 @@ class NoticeController extends AbstractNoticeController
     private $entityName = 'Notice';
     private $controllerName = 'notice';
 
-    public function insertData($tag,$dataToInsert)
+    public function writeLn($tag, $content)
     {
+        if ($content == NULL) {
+            return;
+        }
+        return "<" . $tag . ">" . $content . "</" . $tag . ">\r\n";
+    }
+
+    public function insertData($tag, $dataToInsert)
+    {
+        if ($dataToInsert == NULL) {
+            return;
+        }
         $tag = ucfirst($tag);
-        $return = '<'.$tag.'>\r\n';
+        $return = '<' . $tag . '>\r\n';
         foreach ($dataToInsert as $data) {
             $return .= "<value>" . $data . "</value>\r\n";
         }
-        $return.= '</'.$tag.'>\r\n';
+        $return .= '</' . $tag . '>\r\n';
         return $return;
     }
 
@@ -34,7 +46,7 @@ class NoticeController extends AbstractNoticeController
             $this->writeLn('BuildinMaterial', $salesUnit->getSite()->getBildingMaterial()->getNameOtodom()) .
             $this->writeLn('BuildingOwnership', $salesUnit->getSite()->get) .
             $this->writeLn('FloorNo', $salesUnit->getFloor()) .
-            $this->insertData('ExtraMask',$this->getExtras()) .
+            $this->insertData('ExtraMask', $this->getExtras()) .
             "</FlatDetails>\r\n";
 
         return $return;
@@ -43,23 +55,21 @@ class NoticeController extends AbstractNoticeController
     public function insertHouseDetailsOtodom($salesUnit)
     {
         $return =
-            "<FlatDetails>\r\n" .
+            "<HouseDetails>\r\n" .
             $this->writeLn('BuildingType', $salesUnit->getType()->getNameOtodom()) .
-            $this->writeLn('TerrainArea', $salesUnit->getLandArea()).
-            $this->writeLn('ConstructionStatus', $salesUnit->getConstructionStatus()->getOtodom()).
-            $this->writeLn('BuildYear', $salesUnit->getSite()->getConstructionYear()).
-            $this->writeLn('Type',0).
-            $this->writeLn('FloorsNum',$salesUnit->getSite()->getNumberOfFloors()).
-            $this->writeLn('RoomsNum',$salesUnit->get()).
-            $this->writeLn('GarretType',$salesUnit->getGarretType()->getOtodom()).
-            $this->writeLn('WindowsType',$salesUnit->getWindows()->getOtodom()).
-
-            $this->writeLn('BuildingOwnership', $salesUnit->getSite()->get) .
-            $this->writeLn('FloorNo', $salesUnit->getFloor()) .
-            "<ExtrasMask>\r\n" .
-            $this->insertData($this->getExtras()) .
-            "</ExtrasMask>\r\n
-        </FlatDetails>\r\n";
+            $this->writeLn('TerrainArea', $salesUnit->getLandArea()) .
+            $this->writeLn('ConstructionStatus', $salesUnit->getConstructionStatus()->getOtodom()) .
+            $this->writeLn('BuildYear', $salesUnit->getSite()->getConstructionYear()) .
+            $this->writeLn('Type', 0) .
+            $this->writeLn('FloorsNum', $salesUnit->getSite()->getNumberOfFloors()) .
+            $this->writeLn('RoomsNum', $salesUnit->get()) .
+            $this->writeLn('GarretType', $salesUnit->getGarretType()->getOtodom()) .
+            $this->writeLn('WindowsType', $salesUnit->getWindows()->getOtodom()) .
+            $this->insertData('MediaMask', $salesUnit->getMedias()) .
+            $this->insertData('HeatingMask', $salesUnit->getHeatings()) .
+            $this->insertData('FenceMask', $salesUnit->getFences()) .
+            $this->insertData('ExtrasMask', $salesUnit->getExras()) .
+            "<HouseDetails>\r\n";
 
         return $return;
     }
@@ -69,7 +79,7 @@ class NoticeController extends AbstractNoticeController
 
     }
 
-    public function prepareOneOfferForOtodomAction(SalesUnit $salesUnit)
+    public function prepareOneOfferForOtodom(SalesUnit $salesUnit)
     {
         $offerContent =
             "<Insertion>\r\n" .
@@ -99,42 +109,42 @@ class NoticeController extends AbstractNoticeController
                 break;
         };
 
-
-//            $this->writeLn('',$salesUnit->).
-//            $this->writeLn('',$salesUnit->).
-//            $this->writeLn('',$salesUnit->).
-//            $this->writeLn('',$salesUnit->).
-//
-//            "</Insertion>"
-
+        "</Insertion>";
 
         return $offerContent;
     }
 
-    public function prepareWholeFileForOtodom()
+    public function sendAllNoticesToOtodomAction()
     {
-        $unitsToAdd = $this->getRepository("Notice\\Model\\SalesUnit")->findBy(['isNew' => true]);
         $fileContent = '<?xml version="1.0" encoding="utf-8" ?>
-            <otoDom>
-                <Agency>marek@thtg.pl</Agency>
-                <Date>' . $this->getCurrentDate() . '</Date>
-                <ImportType>full</ImportType>
-                <Insertions>';
-        $fileContent .= '';
+            <otoDom>' .
+            $this->writeLn('Agency', $this->getServiceLocator()->get('config')['otodom']['userEmail']) .
+            $this->writeLn('Date', $this->getCurrentDate()) .
+            $this->writeLn('ImportType', 'full') .
+            '<Insertions>\r\n';
+        $unitsToAdd = $this->getRepository("Notice\\Model\\SalesUnit")->findAll();
         foreach ($unitsToAdd as $unit) {
             $fileContent .= $this->prepareOneOfferForOtodom($unit);
-        }
-        $fileContent .= '</Insertion>\r\n
-                </Insertions>\r\n
-            </otoDom>';
-        var_dump($fileContent);
-        die();
+        };
+        $fileContent .= ' </Insertions > \r\n
+        </otoDom > ';
+
+        var_dump($fileContent);die();
+
+        $filter = new Compress('Zip');
+        $compressedFile = $filter->filter($fileContent);
+
+
+        $ftp = new FtpClient();
+        $ftp->connect('ftp . otodom . pl')
+            ->login($this->getServiceLocator()->get('config')['ftp - otodom']);
+        return $ftp->putFromString('otodom . zip', $compressedFile);
     }
 
     public function sendToOtodom($testData)
     {
 
-        $testData = '<?xml version="1.0" encoding="utf-8" ?>
+        $testData = ' <?xml version = "1.0" encoding = "utf-8" ?>
 <otoDom>
     <Agency>nazwa@biura.pl</Agency>
     <Date>2015-01-29</Date>
@@ -153,7 +163,8 @@ class NoticeController extends AbstractNoticeController
             <Price>300000</Price>
             <PriceType>0</PriceType>
             <PriceCurrency>1</PriceCurrency>
-            <Area>44</Area>
+            <Area>
+            44</Area>
             <MarketType>1</MarketType>
             <ObjectName>2</ObjectName>
             <OfferType>0</OfferType>
@@ -182,57 +193,108 @@ class NoticeController extends AbstractNoticeController
                 <Email>marek@thtg.pl</Email>
             </ContactInfo>
         </Insertion>
-//        <Insertion>
-//            <ID>245</ID>
-//            <Action>0</Action>
-//            <Country>1</Country>
-//            <province>5</province>
-//            <District>Łódź</District>
-//            <City>Łódź</City>
-//            © Otodom 2016 8/29
-//            <Street>Półwiejska</Street>
-//            <Price>150000</Price>
-//            <PriceType>0</PriceType>
-//            <PriceCurrency>1</PriceCurrency>
-//            <Area>3 400,563</Area>
-//            <MarketType>1</MarketType>
-//            <ObjectName>1</ObjectName>
-//            <OfferType>0</OfferType>
-//            <Description>Sprzedam Dom...</Description>
-//            <HouseDetails>
-//                <building-type>1</building-type>
-//                <TerrainArea>3400</TerrainArea>
-//                <ConstructionStatus>0</ConstructionStatus>
-//                <BuildYear>2000</BuildYear>
-//                <RoofType>2</RoofType>
-//                <type>0</type>
-//                <FloorsNum>0</FloorsNum>
-//                <RoomsNum>2</RoomsNum>
-//                <GarretType>2</GarretType>
-//                <WindowsType>2</WindowsType>
-//                <MediaMask>
-//                    <value>0</value>
-//                    <value>4</value>
-//                </MediaMask>
-//                <HeatingMask>
-//                    <value>1</value>
-//                    <value>7</value>
-//                    <value>3</value>
-//                </HeatingMask>
-//                <FenceMask>
-//                    <value>2</value>
-//                    <value>4</value>
-//                    <value>5</value>
-//                </FenceMask>
-//                <Location>2</Location>
-//                <ExtrasMask>
-//                    <value>0</value>
-//                    <value>2</value>
-//                    <value>4</value>
-//                    <value>5</value>
-//                </ExtrasMask>
-//            </HouseDetails>
-//        </Insertion>
+        //
+        <Insertion>
+            //
+            <ID>245</ID>
+            //
+            <Action>0</Action>
+            //
+            <Country>1</Country>
+            //
+            <province>5</province>
+            //
+            <District>Łódź</District>
+            //
+            <City>Łódź</City>
+            // © Otodom 2016 8/29
+            //
+            <Street>Półwiejska</Street>
+            //
+            <Price>150000</Price>
+            //
+            <PriceType>0</PriceType>
+            //
+            <PriceCurrency>1</PriceCurrency>
+            //
+            <Area>
+            3 400,563</Area>
+            //
+            <MarketType>1</MarketType>
+            //
+            <ObjectName>1</ObjectName>
+            //
+            <OfferType>0</OfferType>
+            //
+            <Description>Sprzedam Dom...</Description>
+            //
+            <HouseDetails>
+                //
+                <building-type>1</building-type>
+                //
+                <TerrainArea>3400</TerrainArea>
+                //
+                <ConstructionStatus>0</ConstructionStatus>
+                //
+                <BuildYear>2000</BuildYear>
+                //
+                <RoofType>2</RoofType>
+                //
+                <type>0</type>
+                //
+                <FloorsNum>0</FloorsNum>
+                //
+                <RoomsNum>2</RoomsNum>
+                //
+                <GarretType>2</GarretType>
+                //
+                <WindowsType>2</WindowsType>
+                //
+                <MediaMask>
+                    //
+                    <value>0</value>
+                    //
+                    <value>4</value>
+                    //
+                </MediaMask>
+                //
+                <HeatingMask>
+                    //
+                    <value>1</value>
+                    //
+                    <value>7</value>
+                    //
+                    <value>3</value>
+                    //
+                </HeatingMask>
+                //
+                <FenceMask>
+                    //
+                    <value>2</value>
+                    //
+                    <value>4</value>
+                    //
+                    <value>5</value>
+                    //
+                </FenceMask>
+                //
+                <Location>2</Location>
+                //
+                <ExtrasMask>
+                    //
+                    <value>0</value>
+                    //
+                    <value>2</value>
+                    //
+                    <value>4</value>
+                    //
+                    <value>5</value>
+                    //
+                </ExtrasMask>
+                //
+            </HouseDetails>
+            //
+        </Insertion>
         <Insertion>
             <ID>128</ID>
             <Action>0</Action>
@@ -245,7 +307,8 @@ class NoticeController extends AbstractNoticeController
             <Price>150000</Price>
             <PriceType>0</PriceType>
             <PriceCurrency>1</PriceCurrency>
-            <Area>155,90</Area>
+            <Area>
+            155,90</Area>
             <MarketType>1</MarketType>
             <ObjectName>4</ObjectName>
             <OfferType>0</OfferType>
@@ -294,7 +357,8 @@ class NoticeController extends AbstractNoticeController
             <Price>1600</Price>
             <PriceType>0</PriceType>
             <PriceCurrency>1</PriceCurrency>
-            <Area>47</Area>
+            <Area>
+            47</Area>
             <MarketType>1</MarketType>
             <ObjectName>0</ObjectName>
             <OfferType>1</OfferType>
@@ -340,23 +404,27 @@ class NoticeController extends AbstractNoticeController
     public function headerDomiporta()
     {
         return
-            '<?xml version="1.0" encoding="UTF-8"?>
-<Domiporta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespacesSchemaLocation="domiporta.xsd">
-   <Informacje>
-      <RodzajPaczki>przyrost</RodzajPaczki>
-      <Program>Eksport z www</Program>
-      <WersjaProgramu>1.0</WersjaProgramu>
-   </Informacje>
-   <Oferty>
-      <Nieruchomości>';
+            "<? xml version = '1.0' encoding = 'UTF-8'?>\r\n
+<Domiporta xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespacesSchemaLocation='domiporta.xsd'>\r\n
+    <Informacje>\r\n" .
+            $this->writeLn('RodzajPaczki', 'przyrost') .
+            $this->writeLn('Program', 'Export z www') .
+            $this->writeLn('WersjaProgramu', '1.0') .
+            $this->writeLn('WersjaProgramu', '1.0') .
+            "
+    </Informacje>
+    \r\n
+    <Oferty>\r\n
+        <Nieruchomości>\r\n";
     }
 
     public function prepareOneOfferForDomiporta(SalesUnit $salesUnit)
     {
-        return ('<Oferta>' .
+        return ('
+            <Oferta>' .
             $this->writeLn('ID', 1) .
             $this->writeLn('Nr_oferty', $salesUnit->getOfferNumber()) .
-            $this->writeLn('KategoriaNazwa', $salesUnit->getType()->getNameDomiporta()) .
+            $this->writeLn('KategoriaNazwa', $salesUnit->getType()->getdomiporta()) .
             $this->writeLn('Operacja', 'sprzedaż') .
             $this->writeLn('Cena', $salesUnit->getPrice()) .
             $this->writeLn('Waluta', 'PLN') .
@@ -370,31 +438,48 @@ class NoticeController extends AbstractNoticeController
             $this->writeLn('Agent', $salesUnit->getUser()->getUserName() . $salesUnit->getUser()->getPhone()) .
             $this->writeLn('Nr_licencji', $salesUnit->getUser()->getLicence()) .
             $this->writeLn('Powierzchnia', $salesUnit->getArea()) .
-            $this->writeLn('Liczba_łazienek', $salesUnit->getNoOfBathrooms()) .
+            $this->writeLn('Liczba_łazienek', $salesUnit->getNumberOfRooms()) .
             $this->writeLn('Liczba_pieter', $salesUnit->getSite()->getNumberOfFloors()->floor) .
             $this->writeLn('Pietro', $salesUnit->getFloor()->getFloor()) .
             $this->writeLn('Opis', $salesUnit->getDescription()) .
             $this->writeLn('Rok', $salesUnit->getSite()->getConstructionYear()) .
             $this->writeLn('Material', 245) .//TODO sprawdzić bibliotekę
             $this->writeLn('Glosnosc', $salesUnit->getNoise()->getDomiporta()) .
-            "<Zdjecia>" .
-            "</Zdjecia>" .
-            "</Oferta>");
+            "
+                <Zdjecia>\r\n" .
+            "
+                </Zdjecia>
+                \r\n" .
+            "
+            </Oferta>
+            \r\n");
     }
 
-    public function prepareWholeFileForDomiportaAction()
+    public function sendAllNoticesToDomiportaAction()
     {
-        $unitsToAdd = $this->getRepository("Notice\\Model\\SalesUnit")->findBy(['isNew' => true]);
+        $unitsToAdd = $this->getRepository("Notice\\Model\\SalesUnit")->findAll();
 
         $fileContent = '';
         $fileContent .= $this->headerDomiporta();
         foreach ($unitsToAdd as $unit) {
             $fileContent .= $this->prepareOneOfferForDomiporta($unit);
         }
-        $fileContent .= $this->footerDomiporta();
-        //$fileName = __DIR__.'notices/domiporta.zip';
-        //$filter = new Compress('zip');
-        // return $filter->filter($fileContent);
+
+        $fileContent .= '
+        </Nieruchomości>
+        \r\n
+    </Oferty>
+    ';
+
+        var_dump($fileContent);
+        die();
+
+        $fileName = __DIR__ . 'notices/domiporta.zip';
+        $filter = new Compress('zip');
+        $fileContent = $filter->filter($fileContent);
+
+        $ftp = new FtpClient();
+        $ftp->connect();
         return new ViewModel($fileContent);
     }
 
@@ -406,14 +491,6 @@ class NoticeController extends AbstractNoticeController
 
     }
 
-    public function footerDomiporta()
-    {
-        return
-            '      </Nieruchomości>
-   </Oferty>
-';
-    }
-
     public function preparePartForDomiporta(SalesUnit $salesUnit, $id)
     {
         $this->headerForDomiporta();
@@ -421,30 +498,34 @@ class NoticeController extends AbstractNoticeController
         $this->footerDomiporta();
     }
 
-
-    public function writeLn($tag, $content)
+    public function sendAllNoticesToGumtreeAction()
     {
-        return "<" . $tag . ">" . $content . "</" . $tag . ">\r\n";
+        $unitsToPublish = $this->getRepository("Notice\\Model\\SalesUnit")->findAll();
+        foreach ($unitsToPublish as $unit) {
+            $this->sendToGumtreeAction($unit);
+        }
     }
 
-    public function sendToGumtreeAction()
+    public function sendToGumtreeAction(SalesUnit $salesUnit)
     {
         $formForGumtree = ['locationId' => '3200366',
             'categoryId' => '9073',
             'DwellingForSaleBy' => 'ownr',
-            'DwellingType' => 'flat',
-            'AreaInMeters' => '44',
-            'NumberRooms' => '2',
-            'NumberBathrooms' => '10',
-            'Parking' => 'covrd',
-            'Title' => 'Mieszkanie na Gruwaldzie',
-            'Description' => '<p>Ladne mieszkanie na sprzedaz</p>',
+            'DwellingType' => $salesUnit->getType()->getGumtree(),
+            'AreaInMeters' => $salesUnit->getArea(),
+            'NumberRooms' => $salesUnit->getNumberOfRooms(),
+            'NumberBathrooms' => $salesUnit->getNumberOfBathrooms() . '0',
+            'Parking' => $salesUnit->getParking()->getGumtree(),
+            'Title' => $salesUnit->getTitle(),
+            'Description' => '<p>' . $salesUnit->getDescription() . '</p>',
             'priceTypes' => 'fixed',
-            'Price' => '20000',
+            'Price' => $salesUnit->getPrice(),
             'currencyValues' => 'PLN',
-            'UserName' => 'MarekM',
-            'Email' => 'marek@thtg.pl'];
+            'UserName' => $salesUnit->getUser()->getUsername(),
+            'Email' => $salesUnit->getUser()->getEmail()];
 
+        var_dump($formForGumtree);
+        die();
 
         $client = new Client(['base_uri' => 'http://www.gumtree.pl']);
         $response = $client->request('POST', 'http://www.gumtree.pl/post.html', [
@@ -455,11 +536,10 @@ class NoticeController extends AbstractNoticeController
         return $response->getStatusCode();
     }
 
-
     public function indexAction()
     {
         return new ViewModel([
-            'returnData' => $this->getRepository("Notice\\Model\\SalesUnit")->findAll()
+            'returnData' => $this->getRepository("Notice\\Model\\" . $this->entityName)->findAll()
         ]);
     }
 

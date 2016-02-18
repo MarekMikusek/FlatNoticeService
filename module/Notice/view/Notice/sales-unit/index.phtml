@@ -14,6 +14,9 @@ $controllerName = 'sales-unit';
     <a href="<?= $this->url('notice', ['controller' => $controllerName, 'action' => 'add']) ?>" class="btn btn-info">
         Dodaj nowy wpis</a>
 
+    <a href="<?= $this->url('notice', ['controller' => 'notice', 'action' => 'index']) ?>" class="btn btn-info">
+        Przejdź do wysyłania ogłoszeń na portale</a>
+
     <a href="<?= $this->url('notice', ['action' => 'index']) ?>" class="btn btn-info">Powrót na stronę główną</a>
 </p>
 <table class="table">

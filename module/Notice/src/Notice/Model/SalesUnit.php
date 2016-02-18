@@ -87,10 +87,6 @@ class SalesUnit
      */
     public $garretType;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public $isNew;
 
     /**
      * @ORM\Column(type="text")
@@ -118,6 +114,12 @@ class SalesUnit
      * @ORM\JoinColumn(name="noise_id", referencedColumnName="id")
      */
     protected $noise;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="parking")
+     * @ORM\JoinColumn(name="parking_id", referencedColumnName="id")
+     */
+    protected $parking;
 
     /**
      * @ORM\ManyToMany(targetEntity="extra")
@@ -331,54 +333,6 @@ class SalesUnit
     /**
      * @return mixed
      */
-    public function getNoOfRooms()
-    {
-        return $this->noOfRooms;
-    }
-
-    /**
-     * @param mixed $noOfRooms
-     */
-    public function setNoOfRooms($noOfRooms)
-    {
-        $this->noOfRooms = $noOfRooms;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNoOfBathrooms()
-    {
-        return $this->noOfBathrooms;
-    }
-
-    /**
-     * @param mixed $noOfBathrooms
-     */
-    public function setNoOfBathrooms($noOfBathrooms)
-    {
-        $this->noOfBathrooms = $noOfBathrooms;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIsNew()
-    {
-        return $this->isNew;
-    }
-
-    /**
-     * @param mixed $isNew
-     */
-    public function setIsNew($isNew)
-    {
-        $this->isNew = $isNew;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getNoticeTitle()
     {
         return $this->noticeTitle;
@@ -486,6 +440,70 @@ class SalesUnit
     public function setNoise($noise)
     {
         $this->noise = $noise;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParking()
+    {
+        return $this->parking;
+    }
+
+    /**
+     * @param mixed $parking
+     */
+    public function setParking($parking)
+    {
+        $this->parking = $parking;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumberOfRooms()
+    {
+        return $this->numberOfRooms;
+    }
+
+    /**
+     * @param mixed $numberOfRooms
+     */
+    public function setNumberOfRooms($numberOfRooms)
+    {
+        $this->numberOfRooms = $numberOfRooms;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumberOfBathrooms()
+    {
+        return $this->numberOfBathrooms;
+    }
+
+    /**
+     * @param mixed $numberOfBathrooms
+     */
+    public function setNumberOfBathrooms($numberOfBathrooms)
+    {
+        $this->numberOfBathrooms = $numberOfBathrooms;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGarretType()
+    {
+        return $this->garretType;
+    }
+
+    /**
+     * @param mixed $garretType
+     */
+    public function setGarretType($garretType)
+    {
+        $this->garretType = $garretType;
     }
 
 }

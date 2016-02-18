@@ -4,6 +4,8 @@ namespace Notice\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+
 
 /**
  * Class site
@@ -59,16 +61,6 @@ class Site
     public $street;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    public $latitude;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    public $longitude;
-
-    /**
      * @ORM\ManyToOne(targetEntity="locationOtodom")
      * @ORM\JoinColumn(name="locationOtodom", referencedColumnName="id")
      */
@@ -108,7 +100,7 @@ class Site
     public $numberOfFloors;
 
     /**
-     * @ORM\ManyToOne(targetEntity="heating")
+     * @ORM\ManyToMany(targetEntity="heating")
      * @ORM\JoinTable(name="sites_heatings",
      *     joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="heating_id", referencedColumnName="id")}
@@ -149,7 +141,7 @@ class Site
         }
     }
 
-    public function removeHeatings(Collection $heatings){
+    public function removeHeatings(ArrayCollection $heatings){
         foreach($heatings as $heating){
             $this->heatings->removeElement($heating);
         }
@@ -323,38 +315,6 @@ class Site
     public function setStreet($street)
     {
         $this->street = $street;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLatitude()
-    {
-        return $this->latitude;
-    }
-
-    /**
-     * @param mixed $latitude
-     */
-    public function setLatitude($latitude)
-    {
-        $this->latitude = $latitude;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLongitude()
-    {
-        return $this->longitude;
-    }
-
-    /**
-     * @param mixed $longitude
-     */
-    public function setLongitude($longitude)
-    {
-        $this->longitude = $longitude;
     }
 
     /**

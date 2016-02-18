@@ -1,16 +1,21 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Marek
+ * Date: 2016-02-18
+ * Time: 11:29
+ */
 
 namespace Notice\Form;
 
+
 use Zend\Form\Form;
 
-class TypeForm extends Form
+class ParkingForm extends Form
 {
-    protected $objectManager;
-
     public function __construct($name = NULL)
     {
-        parent::__construct('type');
+        parent::__construct('parking');
     }
 
     public function init()
@@ -21,7 +26,7 @@ class TypeForm extends Form
         ]);
 
         $this->add([
-            'name' => 'name',
+            'name' => 'parkingName',
             'type'=>'text',
             'options'=>[
                 'label'=>'Nazwa'
@@ -29,23 +34,7 @@ class TypeForm extends Form
         ]);
 
         $this->add([
-            'name'=>'otodom',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Nazwa OTODom'
-            ]
-        ]);
-
-        $this->add([
-            'name'=>'domiporta',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Nazwa Domiporta'
-            ]
-        ]);
-
-        $this->add([
-            'name'=>'gumtree',
+            'name' => 'gumtree',
             'type'=>'text',
             'options'=>[
                 'label'=>'Nazwa Gumtree'
@@ -56,7 +45,7 @@ class TypeForm extends Form
             'name'=>'submit',
             'type'=>'Submit',
             'attributes'=>[
-                'value'=>'Go',
+                'value'=>'Zapisz',
                 'id'=>'submitbutton'
             ]
         ]);

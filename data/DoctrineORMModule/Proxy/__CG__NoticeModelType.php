@@ -36,7 +36,7 @@ class Type extends \Notice\Model\Type implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array('name' => NULL, 'otodom' => NULL, 'domiporta' => NULL);
+    public static $lazyPropertiesDefaults = array('name' => NULL, 'otodom' => NULL, 'domiporta' => NULL, 'gumtree' => NULL);
 
 
 
@@ -46,7 +46,7 @@ class Type extends \Notice\Model\Type implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __construct($initializer = null, $cloner = null)
     {
-        unset($this->name, $this->otodom, $this->domiporta);
+        unset($this->name, $this->otodom, $this->domiporta, $this->gumtree);
 
         $this->__initializer__ = $initializer;
         $this->__cloner__      = $cloner;
@@ -108,7 +108,7 @@ class Type extends \Notice\Model\Type implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'otodom', 'domiporta');
+            return array('__isInitialized__', 'id', 'name', 'otodom', 'domiporta', 'gumtree');
         }
 
         return array('__isInitialized__', 'id');
@@ -133,7 +133,7 @@ class Type extends \Notice\Model\Type implements \Doctrine\ORM\Proxy\Proxy
                 }
             };
 
-            unset($this->name, $this->otodom, $this->domiporta);
+            unset($this->name, $this->otodom, $this->domiporta, $this->gumtree);
         }
     }
 
@@ -269,45 +269,67 @@ class Type extends \Notice\Model\Type implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getNameOtodom()
+    public function getOtodom()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNameOtodom', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOtodom', array());
 
-        return parent::getNameOtodom();
+        return parent::getOtodom();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setNameOtodom($nameOtodom)
+    public function setOtodom($otodom)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNameOtodom', array($nameOtodom));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOtodom', array($otodom));
 
-        return parent::setNameOtodom($nameOtodom);
+        return parent::setOtodom($otodom);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getNameDomiporta()
+    public function getDomiporta()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNameDomiporta', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDomiporta', array());
 
-        return parent::getNameDomiporta();
+        return parent::getDomiporta();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setNameDomiporta($nameDomiporta)
+    public function setDomiporta($domiporta)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNameDomiporta', array($nameDomiporta));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDomiporta', array($domiporta));
 
-        return parent::setNameDomiporta($nameDomiporta);
+        return parent::setDomiporta($domiporta);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getGumtree()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGumtree', array());
+
+        return parent::getGumtree();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setGumtree($gumtree)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGumtree', array($gumtree));
+
+        return parent::setGumtree($gumtree);
     }
 
 }

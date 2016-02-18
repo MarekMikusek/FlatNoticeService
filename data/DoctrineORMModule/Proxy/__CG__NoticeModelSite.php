@@ -36,7 +36,7 @@ class Site extends \Notice\Model\Site implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array('siteName' => NULL, 'country' => NULL, 'province' => NULL, 'district' => NULL, 'city' => NULL, 'quarter' => NULL, 'street' => NULL, 'latitude' => NULL, 'longitude' => NULL, 'locationIdOtodom' => NULL, 'categoryIdOtodom' => NULL, 'roofMaterial' => NULL, 'buildingMaterial' => NULL, 'constructionYear' => NULL, 'buildingOwnership' => NULL, 'numberOfFloors' => NULL, 'heating' => NULL, 'medias' => NULL, 'securities' => NULL, 'fence' => NULL);
+    public static $lazyPropertiesDefaults = array('siteName' => NULL, 'country' => NULL, 'province' => NULL, 'district' => NULL, 'city' => NULL, 'quarter' => NULL, 'street' => NULL, 'locationIdOtodom' => NULL, 'categoryIdOtodom' => NULL, 'roofMaterial' => NULL, 'buildingMaterial' => NULL, 'constructionYear' => NULL, 'buildingOwnership' => NULL, 'numberOfFloors' => NULL, 'heatings' => NULL, 'medias' => NULL, 'securities' => NULL, 'fences' => NULL);
 
 
 
@@ -46,7 +46,7 @@ class Site extends \Notice\Model\Site implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __construct($initializer = null, $cloner = null)
     {
-        unset($this->siteName, $this->country, $this->province, $this->district, $this->city, $this->quarter, $this->street, $this->latitude, $this->longitude, $this->locationIdOtodom, $this->categoryIdOtodom, $this->roofMaterial, $this->buildingMaterial, $this->constructionYear, $this->buildingOwnership, $this->numberOfFloors, $this->heating, $this->medias, $this->securities, $this->fence);
+        unset($this->siteName, $this->country, $this->province, $this->district, $this->city, $this->quarter, $this->street, $this->locationIdOtodom, $this->categoryIdOtodom, $this->roofMaterial, $this->buildingMaterial, $this->constructionYear, $this->buildingOwnership, $this->numberOfFloors, $this->heatings, $this->medias, $this->securities, $this->fences);
 
         $this->__initializer__ = $initializer;
         $this->__cloner__      = $cloner;
@@ -108,7 +108,7 @@ class Site extends \Notice\Model\Site implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'inputFilter', 'id', 'siteName', 'country', 'province', 'district', 'city', 'quarter', 'street', 'latitude', 'longitude', 'locationIdOtodom', 'categoryIdOtodom', 'roofMaterial', 'buildingMaterial', 'constructionYear', 'buildingOwnership', 'numberOfFloors', 'heating', 'medias', 'securities', 'fence');
+            return array('__isInitialized__', 'inputFilter', 'id', 'siteName', 'country', 'province', 'district', 'city', 'quarter', 'street', 'locationIdOtodom', 'categoryIdOtodom', 'roofMaterial', 'buildingMaterial', 'constructionYear', 'buildingOwnership', 'numberOfFloors', 'heatings', 'medias', 'securities', 'fences');
         }
 
         return array('__isInitialized__', 'inputFilter', 'id');
@@ -133,7 +133,7 @@ class Site extends \Notice\Model\Site implements \Doctrine\ORM\Proxy\Proxy
                 }
             };
 
-            unset($this->siteName, $this->country, $this->province, $this->district, $this->city, $this->quarter, $this->street, $this->latitude, $this->longitude, $this->locationIdOtodom, $this->categoryIdOtodom, $this->roofMaterial, $this->buildingMaterial, $this->constructionYear, $this->buildingOwnership, $this->numberOfFloors, $this->heating, $this->medias, $this->securities, $this->fence);
+            unset($this->siteName, $this->country, $this->province, $this->district, $this->city, $this->quarter, $this->street, $this->locationIdOtodom, $this->categoryIdOtodom, $this->roofMaterial, $this->buildingMaterial, $this->constructionYear, $this->buildingOwnership, $this->numberOfFloors, $this->heatings, $this->medias, $this->securities, $this->fences);
         }
     }
 
@@ -218,6 +218,94 @@ class Site extends \Notice\Model\Site implements \Doctrine\ORM\Proxy\Proxy
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function addHeatings(\Doctrine\Common\Collections\Collection $heatings)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addHeatings', array($heatings));
+
+        return parent::addHeatings($heatings);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeHeatings(\Doctrine\Common\Collections\ArrayCollection $heatings)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeHeatings', array($heatings));
+
+        return parent::removeHeatings($heatings);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addMedias(\Doctrine\Common\Collections\Collection $medias)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addMedias', array($medias));
+
+        return parent::addMedias($medias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeMedias(\Doctrine\Common\Collections\Collection $medias)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeMedias', array($medias));
+
+        return parent::removeMedias($medias);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addSecurities(\Doctrine\Common\Collections\Collection $securities)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addSecurities', array($securities));
+
+        return parent::addSecurities($securities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeSecurities(\Doctrine\Common\Collections\Collection $securities)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSecurities', array($securities));
+
+        return parent::removeSecurities($securities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addFences(\Doctrine\Common\Collections\Collection $fences)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addFences', array($fences));
+
+        return parent::addFences($fences);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeFences(\Doctrine\Common\Collections\Collection $fences)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeFences', array($fences));
+
+        return parent::removeFences($fences);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -396,50 +484,6 @@ class Site extends \Notice\Model\Site implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStreet', array($street));
 
         return parent::setStreet($street);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getLatitude()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLatitude', array());
-
-        return parent::getLatitude();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setLatitude($latitude)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLatitude', array($latitude));
-
-        return parent::setLatitude($latitude);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getLongitude()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLongitude', array());
-
-        return parent::getLongitude();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setLongitude($longitude)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLongitude', array($longitude));
-
-        return parent::setLongitude($longitude);
     }
 
     /**

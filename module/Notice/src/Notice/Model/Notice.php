@@ -19,26 +19,21 @@ class Notice
      * @ORM\GeneratedValue
      */
     public $id;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public $isChanged;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public $isPublishedOnOtodom;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public $isPublishedOnDomiporta;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    public $isPublishedOnGumtree;
+//
+//    /**
+//     * @ORM\Column(type="boolean")
+//     */
+//    public $toBePublishedOnOtodom;
+//
+//    /**
+//     * @ORM\Column(type="boolean")
+//     */
+//    public $toBePublishedOnDomiporta;
+//
+//    /**
+//     * @ORM\Column(type="boolean")
+//     */
+//    public $toBePublishedOnGumtree;
 
     /**
      * @return mixed
@@ -56,69 +51,52 @@ class Notice
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getIsChanged()
-    {
-        return $this->isChanged;
-    }
-
-    /**
-     * @param mixed $isChanged
-     */
-    public function setIsChanged($isChanged)
-    {
-        $this->isChanged = $isChanged;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIsPublishedOnOtodom()
-    {
-        return $this->isPublishedOnOtodom;
-    }
-
-    /**
-     * @param mixed $isPublishedOnOtodom
-     */
-    public function setIsPublishedOnOtodom($isPublishedOnOtodom)
-    {
-        $this->isPublishedOnOtodom = $isPublishedOnOtodom;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIsPublishedOnDomiporta()
-    {
-        return $this->isPublishedOnDomiporta;
-    }
-
-    /**
-     * @param mixed $isPublishedOnDomiporta
-     */
-    public function setIsPublishedOnDomiporta($isPublishedOnDomiporta)
-    {
-        $this->isPublishedOnDomiporta = $isPublishedOnDomiporta;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIsPublishedOnGumtree()
-    {
-        return $this->isPublishedOnGumtree;
-    }
-
-    /**
-     * @param mixed $isPublishedOnGumtree
-     */
-    public function setIsPublishedOnGumtree($isPublishedOnGumtree)
-    {
-        $this->isPublishedOnGumtree = $isPublishedOnGumtree;
-    }
-
+//    /**
+//     * @return mixed
+//     */
+//    public function getToBePublishedOnOtodom()
+//    {
+//        return $this->toBePublishedOnOtodom;
+//    }
+//
+//    /**
+//     * @param mixed $toBePublishedOnOtodom
+//     */
+//    public function setToBePublishedOnOtodom($toBePublishedOnOtodom)
+//    {
+//        $this->toBePublishedOnOtodom = $toBePublishedOnOtodom;
+//    }
+//
+//    /**
+//     * @return mixed
+//     */
+//    public function getToBePublishedOnDomiporta()
+//    {
+//        return $this->toBePublishedOnDomiporta;
+//    }
+//
+//    /**
+//     * @param mixed $toBePublishedOnDomiporta
+//     */
+//    public function setToBePublishedOnDomiporta($toBePublishedOnDomiporta)
+//    {
+//        $this->toBePublishedOnDomiporta = $toBePublishedOnDomiporta;
+//    }
+//
+//    /**
+//     * @return mixed
+//     */
+//    public function getIsPublishedOnGumtree()
+//    {
+//        return $this->isPublishedOnGumtree;
+//    }
+//
+//    /**
+//     * @param mixed $isPublishedOnGumtree
+//     */
+//    public function setIsPublishedOnGumtree($isPublishedOnGumtree)
+//    {
+//        $this->isPublishedOnGumtree = $isPublishedOnGumtree;
+//    }
 
 }

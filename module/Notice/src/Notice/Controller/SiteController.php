@@ -37,16 +37,6 @@ class SiteController extends AbstractNoticeController
             $form->setData($post);
             if ($form->isValid()) {
                 $dataToAdd = $form->getData();
-
-                $element = $form->getBaseFieldset()->get('medias');
-                $values = $element->getValue();
-
-                foreach ($values as $mediaId){
-                    $results = $this->getRepository('Notice\Model\MediaSite')->findBy(['id'=>$mediaId]);
-                    $mediaEntity = array_pop($results);
-
-                }
-
                 $noticeService = $this->getServiceLocator()->get('NoticeService');
                 $noticeService->insertData($dataToAdd);
                 return $this->redirect()->toRoute('notice', ['controller' => $this->controllerName, 'action' => 'index']);

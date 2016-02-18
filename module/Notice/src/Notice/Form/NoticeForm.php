@@ -27,56 +27,55 @@ class NoticeForm extends Form
                 'options' => [
                     'label' => 'Nieruchomość',
                     'object_manager' => $this->getObjectManager(),
-                    'target_class' => 'notice\Model\SalesUnit',
+                    'target_class' => 'Notice\Model\SalesUnit',
                     'property' => 'id',
                 ],
             ]
         );
 
         $this->add([
-            'name'=>'isChanged',
-            'type'=>'hidden',
+            'name' => 'isChanged',
+            'type' => 'hidden',
         ]);
 
 
         $this->add([
-            'name'=>'isActive',
-            'type'=>'boolean',
+            'name' => 'isActive',
+            'type' => 'boolean',
 
         ]);
 
+//        $this->add([
+//            'name' => 'toBePublishedOnOtodom',
+//            'type' => 'hidden'
+//        ]);
+//
+//        $this->add([
+//            'name' => 'toBePublishedOnDomiporta',
+//            'type' => 'hidden'
+//        ]);
+//
+//        $this->add([
+//            'name' => 'toBePublishedOnGumtree',
+//            'type' => 'hidden'
+//        ]);
+
         $this->add([
-            'name'=>'isPubslishedOnOtodom',
-            'type'=>'boolean',
-            'options'=>[
-                'label'=>'Opublikować na OtoDom?'
+            'name' => 'submit',
+            'type' => 'Submit',
+            'attributes' => [
+                'value' => 'Go',
+                'id' => 'submitbutton'
             ]
         ]);
+    }
 
-        $this->add([
-            'name'=>'isPubslishedOnOtodom',
-            'type'=>'boolean',
-            'options'=>[
-                'label'=>'Opublikować na Gumtree?'
-            ]
-        ]);
-
-        $this->add([
-            'name'=>'isPubslishedOnDomiporta',
-            'type'=>'boolean',
-            'options'=>[
-                'label'=>'Opublikować na Domiporta?'
-            ]
-        ]);
-
-        $this->add([
-            'name'=>'submit',
-            'type'=>'Submit',
-            'attributes'=>[
-                'value'=>'Go',
-                'id'=>'submitbutton'
-            ]
-        ]);
+    /**
+     * @return mixed
+     */
+    public function getObjectManager()
+    {
+        return $this->objectManager;
     }
 
 }

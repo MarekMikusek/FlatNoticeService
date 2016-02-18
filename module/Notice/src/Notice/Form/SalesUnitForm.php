@@ -30,11 +30,6 @@ class SalesUnitForm extends Form
         ]);
 
         $this->add([
-            'name' => 'toBeUpdated',
-            'type' => 'hidden'
-        ]);
-
-        $this->add([
             'name' => 'offerNumber',
             'type' => 'text',
             'options' => [
@@ -120,6 +115,7 @@ class SalesUnitForm extends Form
                 'object_manager' => $this->getObjectManager(),
                 'target_class' => 'Notice\Model\Floor',
                 'property' => 'floor',
+                'default'=>2
             ],
         ]);
 
@@ -153,6 +149,18 @@ class SalesUnitForm extends Form
             'options' => [
                 'label' => 'Opis nieruchomości'
             ]
+        ]);
+
+        $this->add([
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'name' => 'parking',
+            'required' => true,
+            'options' => [
+                'label' => 'Parking',
+                'object_manager' => $this->getObjectManager(),
+                'target_class' => 'Notice\Model\Parking',
+                'property' => 'parkingName',
+            ],
         ]);
 
         $this->add([
