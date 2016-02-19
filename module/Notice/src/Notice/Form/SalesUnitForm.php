@@ -184,6 +184,19 @@ class SalesUnitForm extends Form
             ]
         );
 
+        $this->add(
+            [
+                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+                'name' => 'windows',
+                'options' => [
+                    'label' => 'Typ okien',
+                    'object_manager' => $this->getObjectManager(),
+                    'target_class' => 'Notice\Model\Windows',
+                    'property' => 'windowsMaterial',
+                ],
+            ]
+        );
+
         $this->add([
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'name' => 'noise',
@@ -234,14 +247,16 @@ class SalesUnitForm extends Form
             ]
         );
 
-//        $this->add([
-//            'name' => 'linkToPhoto',
-//            'type' => 'text',
-//            'options' => [
-//                'label' => 'Link do fotografii'
-//            ]
-//        ]);
-
+        $this->add([
+            'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
+            'name' => 'photos',
+            'options' => [
+                'label' => 'Link do zdjęcia',
+                'object_manager' => $this->getObjectManager(),
+                'target_class' => 'Notice\Model\Photo',
+                'property' => 'link',
+            ],
+        ]);
 
         $this->add([
             'name' => 'submit',

@@ -87,7 +87,6 @@ class SalesUnit
      */
     public $garretType;
 
-
     /**
      * @ORM\Column(type="text")
      */
@@ -122,6 +121,12 @@ class SalesUnit
     protected $parking;
 
     /**
+     * @ORM\ManyToOne(targetEntity="windows")
+     * @ORM\JoinColumn(name="windows_id", referencedColumnName="id")
+     */
+    protected $windows;
+
+    /**
      * @ORM\ManyToMany(targetEntity="extra")
      * @ORM\JoinTable(name="salesUnits_extras",
      *      joinColumns={@ORM\JoinColumn(name="salesUnit_id", referencedColumnName="id")},
@@ -138,6 +143,24 @@ class SalesUnit
      *     )
      */
     public $medias;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="photo")
+     * @ORM\JoinTable(name="salesunits_photos",
+     *     joinColumns={@ORM\JoinColumn(name="salesunit_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="link_id", referencedColumnName="id")}
+     *     )
+     */
+    private $photos;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="propertyUse")
+     * @ORM\JoinTable(name="salesunits_propertyuses",
+     *     joinColumns={@ORM\JoinColumn(name="salesunit_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="propertyuse_id", referencedColumnName="id")}
+     *     )
+     */
+    private $propertyUses;
 
     public function addExtras(Collection $extras){
         foreach($extras as $extra){
@@ -163,10 +186,40 @@ class SalesUnit
         }
     }
 
+    public function addPhotos(Collection $photos)
+    {
+        foreach ($photos as $photo){
+            $this->photos->add($photo);
+        }
+    }
+
+    public function removePhotos(Collection $photos)
+    {
+        foreach ($photos as $photo){
+            $this->photos->removeElement($photo);
+        }
+    }
+
+    public function addPropertyUses(Collection $propertyUses)
+    {
+        foreach ($propertyUses as $propetyUse){
+            $this->propertyUses->add($propetyUse);
+        }
+    }
+
+    public function removePropertyUses(Collection $propertyUses)
+    {
+        foreach ($propertyUses as $propertyUse){
+            $this->propertyUses->removeElement($propertyUse);
+        }
+    }
+
     public function __construct()
     {
         $this->extras = new ArrayCollection();
         $this->medias = new ArrayCollection();
+        $this->photos = new ArrayCollection();
+        $this->propertyUses = new ArrayCollection();
     }
 
     /**
@@ -175,14 +228,6 @@ class SalesUnit
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -265,6 +310,37 @@ class SalesUnit
         $this->medias = $medias;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
+    }
+
+    /**
+     * @param mixed $photos
+     */
+    public function setPhotos($photos)
+    {
+        $this->photos = $photos;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPropertyUses()
+    {
+        return $this->propertyUses;
+    }
+
+    /**
+     * @param mixed $propertyUses
+     */
+    public function setPropertyUses($propertyUses)
+    {
+        $this->propertyUses = $propertyUses;
+    }
 
     /**
      * @return mixed
@@ -504,6 +580,22 @@ class SalesUnit
     public function setGarretType($garretType)
     {
         $this->garretType = $garretType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWindows()
+    {
+        return $this->windows;
+    }
+
+    /**
+     * @param mixed $windows
+     */
+    public function setWindows($windows)
+    {
+        $this->windows = $windows;
     }
 
 }

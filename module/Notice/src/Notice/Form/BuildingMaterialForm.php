@@ -28,7 +28,7 @@ class BuildingMaterialForm extends Form
         ]);
 
         $this->add([
-            'name' => 'nameOtodom',
+            'name' => 'otodom',
             'type' => 'text',
             'options' => [
                 'label' => 'Nazwa materiału Otodom'

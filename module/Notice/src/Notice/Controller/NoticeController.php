@@ -15,6 +15,14 @@ class NoticeController extends AbstractNoticeController
 {
     private $entityName = 'Notice';
     private $controllerName = 'notice';
+    private $photosToAttachDomiporta;
+    private $photosToAttachOtodom;
+
+    public function createArchive($file, $photoGallery)
+    {
+        $zip = new \ZipArchive();
+        $zip->open();
+    }
 
     public function writeLn($tag, $content)
     {
@@ -24,15 +32,54 @@ class NoticeController extends AbstractNoticeController
         return "<" . $tag . ">" . $content . "</" . $tag . ">\r\n";
     }
 
-    public function insertData($tag, $dataToInsert)
+    public function insertPhotoDomiporta($photos)
+    {
+        $return = '';
+        foreach ($photos as $photo) {
+            $return .= $this->writeLn('NazwaZdjecia', $photo->getFileName());
+            $this->photosToAttachDomiporta[] = $photo->getLink();
+        }
+    }
+
+    public function insertPhotoOtodom($photos)
+    {
+        $return = '';
+        foreach ($photos as $photo) {
+            $return .= $this->writeLn('Photo', $this->writeLn('File', $photo->getFileName()));
+            $this->photosToAttachOtodom[] = $photo->getLink();
+        }
+    }
+
+    public function insertExtras($extras, $propertyType)
+    {
+        $return = "<ExtrasMask>\r\n";
+        if ($propertyType == 'mieszkanie') {
+            foreach ($extras as $extra) {
+                $return .= "<value>" . $extra->getFlatOtodom() . "</value>";
+            }
+        } elseif ($propertyType == 'dom') {
+            foreach ($extras as $extra) {
+                $return .= "<value>" . $extra->getHouseOtodom() . "</value>";
+            }
+        } else {
+            foreach ($extras as $extra) {
+                $return .= "<value>" . $extra->getFlatOtodom() . "</value>";
+            }
+        };
+        $return .= "</ExtrasMask>\r\n";
+        return $return;
+    }
+
+    public function insertArrayData($tag, $dataToInsert)
     {
         if ($dataToInsert == NULL) {
             return;
         }
         $tag = ucfirst($tag);
         $return = '<' . $tag . '>\r\n';
+
         foreach ($dataToInsert as $data) {
-            $return .= "<value>" . $data . "</value>\r\n";
+            $return .= "<value>" . $data->getOtodom() . "</value>\r\n";
         }
         $return .= '</' . $tag . '>\r\n';
         return $return;
@@ -40,14 +87,13 @@ class NoticeController extends AbstractNoticeController
 
     public function insertFlatDetailsOtodom($salesUnit)
     {
-        $return =
-            "<FlatDetails>\r\n" .
-            $this->writeLn('BuildingType', $salesUnit->getType()->getNameOtodom()) .
-            $this->writeLn('BuildinMaterial', $salesUnit->getSite()->getBildingMaterial()->getNameOtodom()) .
-            $this->writeLn('BuildingOwnership', $salesUnit->getSite()->get) .
-            $this->writeLn('FloorNo', $salesUnit->getFloor()) .
-            $this->insertData('ExtraMask', $this->getExtras()) .
-            "</FlatDetails>\r\n";
+        $return = $this->writeLn('FlatDetails',
+            $this->writeLn('BuildingType', $salesUnit->getType()->getOtodom()) .
+            $this->writeLn('BuildingMaterial', $salesUnit->getSite()->getBuildingMaterial()->getOtodom()) .
+            $this->writeLn('BuildingOwnership', $salesUnit->getSite()->getBuildingOwnership()) .
+            $this->writeLn('FloorNo', $salesUnit->getFloor()->getOtodom()) .
+            $this->insertExtras($salesUnit->getExtras(), $salesUnit->getType()->getName())
+        );
 
         return $return;
     }
@@ -56,19 +102,19 @@ class NoticeController extends AbstractNoticeController
     {
         $return =
             "<HouseDetails>\r\n" .
-            $this->writeLn('BuildingType', $salesUnit->getType()->getNameOtodom()) .
+            $this->writeLn('BuildingType', $salesUnit->getType()->getOtodom()) .
             $this->writeLn('TerrainArea', $salesUnit->getLandArea()) .
             $this->writeLn('ConstructionStatus', $salesUnit->getConstructionStatus()->getOtodom()) .
             $this->writeLn('BuildYear', $salesUnit->getSite()->getConstructionYear()) .
             $this->writeLn('Type', 0) .
-            $this->writeLn('FloorsNum', $salesUnit->getSite()->getNumberOfFloors()) .
-            $this->writeLn('RoomsNum', $salesUnit->get()) .
+            $this->writeLn('FloorsNum', $salesUnit->getSite()->getNumberOfFloors()->getOtodom()) .
+            $this->writeLn('RoomsNum', $salesUnit->getNumberOfRooms()) .
             $this->writeLn('GarretType', $salesUnit->getGarretType()->getOtodom()) .
             $this->writeLn('WindowsType', $salesUnit->getWindows()->getOtodom()) .
-            $this->insertData('MediaMask', $salesUnit->getMedias()) .
-            $this->insertData('HeatingMask', $salesUnit->getHeatings()) .
-            $this->insertData('FenceMask', $salesUnit->getFences()) .
-            $this->insertData('ExtrasMask', $salesUnit->getExras()) .
+            $this->insertArrayData('MediaMask', $salesUnit->getMedias()) .
+            $this->insertArrayData('HeatingMask', $salesUnit->getSite()->getHeatings()) .
+            $this->insertArrayData('FenceMask', $salesUnit->getSite()->getFences()) .
+            $this->insertExtras($salesUnit->getExtras(),$salesUnit->getType()->getName()) .
             "<HouseDetails>\r\n";
 
         return $return;
@@ -76,7 +122,14 @@ class NoticeController extends AbstractNoticeController
 
     public function insertCommercialPropertyDetails($salesUnit)
     {
-
+        $return =
+            "<CommercialPropertyDetails>".
+            $this->insertArrayData('PropertyUseMask',$salesUnit->getPropertyUses()->getOtodom()).
+            $this->insertExtras($salesUnit->getExtras(), $salesUnit->getType()->getName()).
+            $this->writeLn('Floor',$salesUnit->getFloor()->getOtodom()).
+            "</CommercialPropertyDetails>"
+        ;
+        return $return;
     }
 
     public function prepareOneOfferForOtodom(SalesUnit $salesUnit)
@@ -94,7 +147,7 @@ class NoticeController extends AbstractNoticeController
             $this->writeLn('PriceCurrency', 1) .
             $this->writeLn('Area', $salesUnit->getArea()) .
             $this->writeLn('MarketType', 0) .
-            $this->writeLn('ObjectName', $salesUnit->getType()->getNameOtodom()) .
+            $this->writeLn('ObjectName', $salesUnit->getType()->getOtodom()) .
             $this->writeLn('OfferType', 0) .
             $this->writeLn('Agent', $salesUnit->getUser()->getLicence());
         switch ($salesUnit->getType()->getName()) {
@@ -108,7 +161,6 @@ class NoticeController extends AbstractNoticeController
                 $this->insertCommercialPropertyDetails($salesUnit);
                 break;
         };
-
         "</Insertion>";
 
         return $offerContent;
@@ -116,6 +168,7 @@ class NoticeController extends AbstractNoticeController
 
     public function sendAllNoticesToOtodomAction()
     {
+        $this->photosToAttachOtodom = [];
         $fileContent = '<?xml version="1.0" encoding="utf-8" ?>
             <otoDom>' .
             $this->writeLn('Agency', $this->getServiceLocator()->get('config')['otodom']['userEmail']) .
@@ -126,10 +179,17 @@ class NoticeController extends AbstractNoticeController
         foreach ($unitsToAdd as $unit) {
             $fileContent .= $this->prepareOneOfferForOtodom($unit);
         };
-        $fileContent .= ' </Insertions > \r\n
+        $fileContent .= ' </Insertions >\r\n
         </otoDom > ';
 
-        var_dump($fileContent);die();
+        var_dump($this->getCurrentDate());
+        die();
+
+
+        $zip->open('otodom' . $this->getCurrentDate() . '.zip', \ZipArchive::CREATE);
+
+        var_dump($fileContent);
+        die();
 
         $filter = new Compress('Zip');
         $compressedFile = $filter->filter($fileContent);
@@ -412,8 +472,7 @@ class NoticeController extends AbstractNoticeController
             $this->writeLn('WersjaProgramu', '1.0') .
             $this->writeLn('WersjaProgramu', '1.0') .
             "
-    </Informacje>
-    \r\n
+    </Informacje>\r\n
     <Oferty>\r\n
         <Nieruchomości>\r\n";
     }
@@ -434,29 +493,27 @@ class NoticeController extends AbstractNoticeController
             $this->writeLn('Miasto', $salesUnit->getSite()->getCity()) .
             $this->writeLn('Gmina', '') .
             $this->writeLn('Powiat', $salesUnit->getSite()->getDistrict()) .
-            $this->writeLn('Województwo', $salesUnit->getSite()->getProvince()->domiporta) .
+            $this->writeLn('Województwo', $salesUnit->getSite()->getProvince()->getDomiporta()) .
             $this->writeLn('Agent', $salesUnit->getUser()->getUserName() . $salesUnit->getUser()->getPhone()) .
             $this->writeLn('Nr_licencji', $salesUnit->getUser()->getLicence()) .
             $this->writeLn('Powierzchnia', $salesUnit->getArea()) .
             $this->writeLn('Liczba_łazienek', $salesUnit->getNumberOfRooms()) .
-            $this->writeLn('Liczba_pieter', $salesUnit->getSite()->getNumberOfFloors()->floor) .
-            $this->writeLn('Pietro', $salesUnit->getFloor()->getFloor()) .
+            $this->writeLn('Liczba_pieter', $salesUnit->getSite()->getNumberOfFloors()) .
+            $this->writeLn('Pietro', $salesUnit->getFloor()->getDomiporta()) .
             $this->writeLn('Opis', $salesUnit->getDescription()) .
             $this->writeLn('Rok', $salesUnit->getSite()->getConstructionYear()) .
             $this->writeLn('Material', 245) .//TODO sprawdzić bibliotekę
             $this->writeLn('Glosnosc', $salesUnit->getNoise()->getDomiporta()) .
             "
                 <Zdjecia>\r\n" .
-            "
-                </Zdjecia>
-                \r\n" .
-            "
-            </Oferta>
-            \r\n");
+            $this->insertPhotoDomiporta($salesUnit->getPhotos()) .
+            "</Zdjecia>\r\n
+            </Oferta>\r\n");
     }
 
     public function sendAllNoticesToDomiportaAction()
     {
+        $this->photosToAttachDomiporta = [];
         $unitsToAdd = $this->getRepository("Notice\\Model\\SalesUnit")->findAll();
 
         $fileContent = '';
@@ -466,8 +523,7 @@ class NoticeController extends AbstractNoticeController
         }
 
         $fileContent .= '
-        </Nieruchomości>
-        \r\n
+        </Nieruchomości>\r\n
     </Oferty>
     ';
 
@@ -486,9 +542,8 @@ class NoticeController extends AbstractNoticeController
     public function getCurrentDate()
     {
         $date = new DateTime('NOW');
-        $date->setFormat('y-m-j');
-        return $date;
-
+        $date->setFormat('YmdHi');
+        return "201602191009";
     }
 
     public function preparePartForDomiporta(SalesUnit $salesUnit, $id)

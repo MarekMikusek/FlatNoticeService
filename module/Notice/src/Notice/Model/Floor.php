@@ -26,7 +26,12 @@ class Floor
     /**
      * @ORM\Column(type="integer")
      */
-    public $floorOtodom;
+    public $otodom;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $domiporta;
 
     /**
      * @return mixed
@@ -55,17 +60,18 @@ class Floor
     /**
      * @return mixed
      */
-    public function getFloorOtodom()
+    public function getOtodom()
     {
-        return $this->floorOtodom;
+        return $this->otodom;
     }
 
     /**
-     * @param mixed $floorOtodom
+     * @param mixed $otodom
      */
-    public function setFloorOtodom($floorOtodom)
+    public function setOtodom($otodom)
     {
-        $this->floorOtodom = $floorOtodom;
+        $this->otodom = $otodom;
     }
+
 
 }

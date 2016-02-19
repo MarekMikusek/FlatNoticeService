@@ -78,7 +78,8 @@ class Site
     public $roofMaterial;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\ManyToOne(targetEntity="buildingMaterial")
+     * @ORM\JoinColumn(name="buildingMaterial", referencedColumnName="id")
      */
     public $buildingMaterial;
 
@@ -491,6 +492,38 @@ class Site
     public function setBuildingOwnership($buildingOwnership)
     {
         $this->buildingOwnership = $buildingOwnership;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHeatings()
+    {
+        return $this->heatings;
+    }
+
+    /**
+     * @param mixed $heatings
+     */
+    public function setHeatings($heatings)
+    {
+        $this->heatings = $heatings;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFences()
+    {
+        return $this->fences;
+    }
+
+    /**
+     * @param mixed $fences
+     */
+    public function setFences($fences)
+    {
+        $this->fences = $fences;
     }
 
 }

@@ -43,7 +43,6 @@ class SalesUnitController  extends AbstractNoticeController
                 $dataToAdd->isNew = true;
                 $noticeService = $this->getServiceLocator()->get('NoticeService');
                 $noticeService->insertData($dataToAdd);
-               // var_dump(__DIR__);die();
                 $wp = fopen(__DIR__.'\\default\\defaultSalesUnitData.txt','w');
                 fwrite($wp,serialize($form->getData()));
                 fclose($wp);
@@ -90,8 +89,8 @@ class SalesUnitController  extends AbstractNoticeController
         $request = $this->getRequest();
         $dataToDelete = $this->getRepository("Notice\\Model\\" . $this->entityName)->find($id);
         if ($request->isPost()) {
-            $del = $request->getPost('del', 'No');
-            if ($del == "Yes") {
+            $del = $request->getPost('del', 'Nie');
+            if ($del == "Tak") {
                 $noticeService = $this->getServiceLocator()->get('NoticeService');
                 $noticeService->deleteData($dataToDelete);
                 $this->flashMessenger()->addMessage('Usunięto!');

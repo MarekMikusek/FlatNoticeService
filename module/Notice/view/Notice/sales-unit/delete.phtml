@@ -1,16 +1,16 @@
 <?php
 
-$title = 'Usuń użytkownika';
+$title = 'Usuń lokal';
 $this->headTitle($title);
 
-$controllerName = 'user';
+$controllerName = 'sales-unit';
 
 ?><h1><?php $this->escapeHtml($title) ?> </h1>
 <p>
     Czy chcesz usunąć wpis:
 </p>
 <h3>
-    <?php echo $this->escapeHtml($dataToDelete->userName) ?>
+    <?php echo $this->escapeHtml($dataToDelete->noticeTitle) ?>
 </h3>
 <?php
 $url = $this->url('notice', [
@@ -21,7 +21,7 @@ $url = $this->url('notice', [
 ?>
 <form method="post" action="<?= $url; ?>">
     <div>
-        <input type="submit" name="del" value="Yes">
-        <input type="submit" name="del" value="No">
+        <input type="submit" name="del" value="Tak">
+        <input type="submit" name="del" value="Nie">
     </div>
 </form>

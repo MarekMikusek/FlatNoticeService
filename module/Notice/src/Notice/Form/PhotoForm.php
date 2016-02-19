@@ -1,14 +1,20 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Marek
+ * Date: 2016-02-19
+ * Time: 10:03
+ */
 
 namespace Notice\Form;
 
-use Zend\Form\FOrm;
+use Zend\Form\Form;
 
-class FloorForm extends Form
+class LinkForm extends Form
 {
     public function __construct($name = NULL)
     {
-        parent::__construct('floor');
+        parent::__construct('link');
     }
 
     public function init()
@@ -19,26 +25,18 @@ class FloorForm extends Form
         ]);
 
         $this->add([
-            'name' => 'floor',
+            'name' => 'fileName',
             'type'=>'text',
             'options'=>[
-                'label'=>'Piętro'
+                'label'=>'Nazwa pliku'
             ]
         ]);
 
         $this->add([
-            'name'=>'otodom',
-            'type'=>'integer',
+            'name' => 'link',
+            'type'=>'text',
             'options'=>[
-                'label'=>'Piętro wg Otodom'
-            ]
-        ]);
-
-        $this->add([
-            'name'=>'domiporta',
-            'type'=>'integer',
-            'options'=>[
-                'label'=>'Piętro wg Domiporta'
+                'label'=>'Link do zdjęcia'
             ]
         ]);
 
@@ -51,5 +49,4 @@ class FloorForm extends Form
             ]
         ]);
     }
-
 }

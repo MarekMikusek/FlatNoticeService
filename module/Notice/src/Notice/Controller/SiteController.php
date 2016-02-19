@@ -82,12 +82,11 @@ class SiteController extends AbstractNoticeController
         $request = $this->getRequest();
         $dataToDelete = $this->getRepository("Notice\\Model\\" . $this->entityName)->find($id);
         if ($request->isPost()) {
-            $del = $request->getPost('del', 'No');
-            if ($del == "Yes") {
+            $del = $request->getPost('del', 'Nie');
+            if ($del == "Tak") {
                 $noticeService = $this->getServiceLocator()->get('NoticeService');
                 $noticeService->deleteData($dataToDelete);
                 $this->flashMessenger()->addMessage('Usunięto!');
-                var_dump($this->controllerName);
                 return $this->redirect()->toRoute('notice',
                     ['controller' => $this->controllerName, 'action' => 'index']);
             }

@@ -2,13 +2,14 @@
 
 namespace Notice\Form;
 
-use Zend\Form\FOrm;
+use Zend\Form\Form;
 
-class FloorForm extends Form
+class PropertyUseForm extends Form
 {
+
     public function __construct($name = NULL)
     {
-        parent::__construct('floor');
+        parent::__construct('PropertyUse');
     }
 
     public function init()
@@ -19,26 +20,18 @@ class FloorForm extends Form
         ]);
 
         $this->add([
-            'name' => 'floor',
+            'name' => 'propertyUse',
             'type'=>'text',
             'options'=>[
-                'label'=>'Piętro'
+                'label'=>'Sposób użytkowania lokalu użytkowego'
             ]
         ]);
 
         $this->add([
-            'name'=>'otodom',
-            'type'=>'integer',
+            'name' => 'otodom',
+            'type'=>'text',
             'options'=>[
-                'label'=>'Piętro wg Otodom'
-            ]
-        ]);
-
-        $this->add([
-            'name'=>'domiporta',
-            'type'=>'integer',
-            'options'=>[
-                'label'=>'Piętro wg Domiporta'
+                'label'=>'Oznaczenie wg Otodom'
             ]
         ]);
 
@@ -51,5 +44,4 @@ class FloorForm extends Form
             ]
         ]);
     }
-
 }

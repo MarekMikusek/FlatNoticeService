@@ -36,7 +36,7 @@ class Floor extends \Notice\Model\Floor implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array('floor' => NULL, 'floorOtodom' => NULL);
+    public static $lazyPropertiesDefaults = array('floor' => NULL, 'otodom' => NULL);
 
 
 
@@ -46,7 +46,7 @@ class Floor extends \Notice\Model\Floor implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __construct($initializer = null, $cloner = null)
     {
-        unset($this->floor, $this->floorOtodom);
+        unset($this->floor, $this->otodom);
 
         $this->__initializer__ = $initializer;
         $this->__cloner__      = $cloner;
@@ -108,10 +108,10 @@ class Floor extends \Notice\Model\Floor implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'floor', 'floorOtodom');
+            return array('__isInitialized__', 'id', 'floor', 'otodom', 'domiporta');
         }
 
-        return array('__isInitialized__', 'id');
+        return array('__isInitialized__', 'id', 'domiporta');
     }
 
     /**
@@ -133,7 +133,7 @@ class Floor extends \Notice\Model\Floor implements \Doctrine\ORM\Proxy\Proxy
                 }
             };
 
-            unset($this->floor, $this->floorOtodom);
+            unset($this->floor, $this->otodom);
         }
     }
 
@@ -258,23 +258,23 @@ class Floor extends \Notice\Model\Floor implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getFloorOtodom()
+    public function getOtodom()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFloorOtodom', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOtodom', array());
 
-        return parent::getFloorOtodom();
+        return parent::getOtodom();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setFloorOtodom($floorOtodom)
+    public function setOtodom($otodom)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFloorOtodom', array($floorOtodom));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOtodom', array($otodom));
 
-        return parent::setFloorOtodom($floorOtodom);
+        return parent::setOtodom($otodom);
     }
 
 }

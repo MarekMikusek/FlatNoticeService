@@ -728,4 +728,48 @@ class Site extends \Notice\Model\Site implements \Doctrine\ORM\Proxy\Proxy
         return parent::setBuildingOwnership($buildingOwnership);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getHeatings()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHeatings', array());
+
+        return parent::getHeatings();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setHeatings($heatings)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHeatings', array($heatings));
+
+        return parent::setHeatings($heatings);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFences()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFences', array());
+
+        return parent::getFences();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFences($fences)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFences', array($fences));
+
+        return parent::setFences($fences);
+    }
+
 }
