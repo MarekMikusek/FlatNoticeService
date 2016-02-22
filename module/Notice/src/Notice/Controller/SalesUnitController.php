@@ -28,8 +28,13 @@ class SalesUnitController  extends AbstractNoticeController
     {
         $form = $this->createForm('Notice\\Form\\' . $this->entityName . 'Form');
         $form->get('submit')->setValue('Dodaj');
-
         $request = $this->getRequest();
+
+        if (!$request->isPost() && file_exists('/default/defaultSalesUnitData.txt')){
+            $wp = fopen('\\default\\defaultSalesUnitData.txt','r');
+            $form->setData(unserialize(fread($wp)));
+            fclose($wp);
+        }
 
         if ($request->isPost()) {
             $form->setData($request->getPost());
@@ -38,6 +43,9 @@ class SalesUnitController  extends AbstractNoticeController
                 $dataToAdd->isNew = true;
                 $noticeService = $this->getServiceLocator()->get('NoticeService');
                 $noticeService->insertData($dataToAdd);
+                $wp = fopen(__DIR__.'\\default\\defaultSalesUnitData.txt','w');
+                fwrite($wp,serialize($form->getData()));
+                fclose($wp);
                 return $this->redirect()->toRoute('notice', ['controller' => $this->controllerName, 'action' => 'index']);
             }
         }
@@ -81,8 +89,8 @@ class SalesUnitController  extends AbstractNoticeController
         $request = $this->getRequest();
         $dataToDelete = $this->getRepository("Notice\\Model\\" . $this->entityName)->find($id);
         if ($request->isPost()) {
-            $del = $request->getPost('del', 'No');
-            if ($del == "Yes") {
+            $del = $request->getPost('del', 'Nie');
+            if ($del == "Tak") {
                 $noticeService = $this->getServiceLocator()->get('NoticeService');
                 $noticeService->deleteData($dataToDelete);
                 $this->flashMessenger()->addMessage('Usunięto!');

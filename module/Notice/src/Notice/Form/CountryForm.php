@@ -27,7 +27,7 @@ class CountryForm extends Form
         ]);
 
         $this->add([
-            'name' => 'Otodom',
+            'name' => 'otodom',
             'type'=>'text',
             'options'=>[
                 'label'=>'Nazwa wg Otodom'

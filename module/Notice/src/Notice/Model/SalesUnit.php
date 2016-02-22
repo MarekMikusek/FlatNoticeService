@@ -88,11 +88,6 @@ class SalesUnit
     public $garretType;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    public $isNew;
-
-    /**
      * @ORM\Column(type="text")
      */
     public $noticeTitle;
@@ -120,6 +115,18 @@ class SalesUnit
     protected $noise;
 
     /**
+     * @ORM\ManyToOne(targetEntity="parking")
+     * @ORM\JoinColumn(name="parking_id", referencedColumnName="id")
+     */
+    protected $parking;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="windows")
+     * @ORM\JoinColumn(name="windows_id", referencedColumnName="id")
+     */
+    protected $windows;
+
+    /**
      * @ORM\ManyToMany(targetEntity="extra")
      * @ORM\JoinTable(name="salesUnits_extras",
      *      joinColumns={@ORM\JoinColumn(name="salesUnit_id", referencedColumnName="id")},
@@ -136,6 +143,24 @@ class SalesUnit
      *     )
      */
     public $medias;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="photo")
+     * @ORM\JoinTable(name="salesunits_photos",
+     *     joinColumns={@ORM\JoinColumn(name="salesunit_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="link_id", referencedColumnName="id")}
+     *     )
+     */
+    private $photos;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="propertyUse")
+     * @ORM\JoinTable(name="salesunits_propertyuses",
+     *     joinColumns={@ORM\JoinColumn(name="salesunit_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="propertyuse_id", referencedColumnName="id")}
+     *     )
+     */
+    private $propertyUses;
 
     public function addExtras(Collection $extras){
         foreach($extras as $extra){
@@ -161,10 +186,40 @@ class SalesUnit
         }
     }
 
+    public function addPhotos(Collection $photos)
+    {
+        foreach ($photos as $photo){
+            $this->photos->add($photo);
+        }
+    }
+
+    public function removePhotos(Collection $photos)
+    {
+        foreach ($photos as $photo){
+            $this->photos->removeElement($photo);
+        }
+    }
+
+    public function addPropertyUses(Collection $propertyUses)
+    {
+        foreach ($propertyUses as $propetyUse){
+            $this->propertyUses->add($propetyUse);
+        }
+    }
+
+    public function removePropertyUses(Collection $propertyUses)
+    {
+        foreach ($propertyUses as $propertyUse){
+            $this->propertyUses->removeElement($propertyUse);
+        }
+    }
+
     public function __construct()
     {
         $this->extras = new ArrayCollection();
         $this->medias = new ArrayCollection();
+        $this->photos = new ArrayCollection();
+        $this->propertyUses = new ArrayCollection();
     }
 
     /**
@@ -173,14 +228,6 @@ class SalesUnit
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -263,6 +310,37 @@ class SalesUnit
         $this->medias = $medias;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
+    }
+
+    /**
+     * @param mixed $photos
+     */
+    public function setPhotos($photos)
+    {
+        $this->photos = $photos;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPropertyUses()
+    {
+        return $this->propertyUses;
+    }
+
+    /**
+     * @param mixed $propertyUses
+     */
+    public function setPropertyUses($propertyUses)
+    {
+        $this->propertyUses = $propertyUses;
+    }
 
     /**
      * @return mixed
@@ -326,54 +404,6 @@ class SalesUnit
     public function setLandArea($landArea)
     {
         $this->landArea = $landArea;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNoOfRooms()
-    {
-        return $this->noOfRooms;
-    }
-
-    /**
-     * @param mixed $noOfRooms
-     */
-    public function setNoOfRooms($noOfRooms)
-    {
-        $this->noOfRooms = $noOfRooms;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNoOfBathrooms()
-    {
-        return $this->noOfBathrooms;
-    }
-
-    /**
-     * @param mixed $noOfBathrooms
-     */
-    public function setNoOfBathrooms($noOfBathrooms)
-    {
-        $this->noOfBathrooms = $noOfBathrooms;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIsNew()
-    {
-        return $this->isNew;
-    }
-
-    /**
-     * @param mixed $isNew
-     */
-    public function setIsNew($isNew)
-    {
-        $this->isNew = $isNew;
     }
 
     /**
@@ -486,6 +516,86 @@ class SalesUnit
     public function setNoise($noise)
     {
         $this->noise = $noise;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParking()
+    {
+        return $this->parking;
+    }
+
+    /**
+     * @param mixed $parking
+     */
+    public function setParking($parking)
+    {
+        $this->parking = $parking;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumberOfRooms()
+    {
+        return $this->numberOfRooms;
+    }
+
+    /**
+     * @param mixed $numberOfRooms
+     */
+    public function setNumberOfRooms($numberOfRooms)
+    {
+        $this->numberOfRooms = $numberOfRooms;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumberOfBathrooms()
+    {
+        return $this->numberOfBathrooms;
+    }
+
+    /**
+     * @param mixed $numberOfBathrooms
+     */
+    public function setNumberOfBathrooms($numberOfBathrooms)
+    {
+        $this->numberOfBathrooms = $numberOfBathrooms;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGarretType()
+    {
+        return $this->garretType;
+    }
+
+    /**
+     * @param mixed $garretType
+     */
+    public function setGarretType($garretType)
+    {
+        $this->garretType = $garretType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWindows()
+    {
+        return $this->windows;
+    }
+
+    /**
+     * @param mixed $windows
+     */
+    public function setWindows($windows)
+    {
+        $this->windows = $windows;
     }
 
 }

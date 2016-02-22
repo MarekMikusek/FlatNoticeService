@@ -1,19 +1,25 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Marek
+ * Date: 2016-02-19
+ * Time: 10:01
+ */
 
 namespace Notice\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class building-material
- * @ORM\Entity
+ * Class Photo
  * @package Notice\Model
+ * @ORM\Entity
  */
-class BuildingMaterial
+class Photo
 {
     /**
-     * @ORM\Id
      * @ORM\Column(type="integer")
+     * @ORM\Id
      * @ORM\GeneratedValue
      */
     public $id;
@@ -21,13 +27,12 @@ class BuildingMaterial
     /**
      * @ORM\Column(type="text")
      */
-    public $material;
+    public $fileName;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $otodom;
-
+    public $link;
 
     /**
      * @return mixed
@@ -40,33 +45,33 @@ class BuildingMaterial
     /**
      * @return mixed
      */
-    public function getMaterial()
+    public function getFileName()
     {
-        return $this->material;
+        return $this->fileName;
     }
 
     /**
-     * @param mixed $material
+     * @param mixed $fileName
      */
-    public function setMaterial($material)
+    public function setFileName($fileName)
     {
-        $this->material = $material;
+        $this->fileName = $fileName;
     }
 
     /**
      * @return mixed
      */
-    public function getOtodom()
+    public function getLink()
     {
-        return $this->otodom;
+        return $this->link;
     }
 
     /**
-     * @param mixed $otodom
+     * @param mixed $link
      */
-    public function setOtodom($otodom)
+    public function setLink($link)
     {
-        $this->otodom = $otodom;
+        $this->link = $link;
     }
 
 }

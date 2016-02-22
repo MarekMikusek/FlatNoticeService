@@ -30,11 +30,6 @@ class SalesUnitForm extends Form
         ]);
 
         $this->add([
-            'name' => 'toBeUpdated',
-            'type' => 'hidden'
-        ]);
-
-        $this->add([
             'name' => 'offerNumber',
             'type' => 'text',
             'options' => [
@@ -120,6 +115,7 @@ class SalesUnitForm extends Form
                 'object_manager' => $this->getObjectManager(),
                 'target_class' => 'Notice\Model\Floor',
                 'property' => 'floor',
+                'default'=>2
             ],
         ]);
 
@@ -156,6 +152,18 @@ class SalesUnitForm extends Form
         ]);
 
         $this->add([
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'name' => 'parking',
+            'required' => true,
+            'options' => [
+                'label' => 'Parking',
+                'object_manager' => $this->getObjectManager(),
+                'target_class' => 'Notice\Model\Parking',
+                'property' => 'parkingName',
+            ],
+        ]);
+
+        $this->add([
             'name' => 'availableFrom',
             'type' => 'date',
             'options' => [
@@ -172,6 +180,19 @@ class SalesUnitForm extends Form
                     'object_manager' => $this->getObjectManager(),
                     'target_class' => 'Notice\Model\Site',
                     'property' => 'siteName',
+                ],
+            ]
+        );
+
+        $this->add(
+            [
+                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+                'name' => 'windows',
+                'options' => [
+                    'label' => 'Typ okien',
+                    'object_manager' => $this->getObjectManager(),
+                    'target_class' => 'Notice\Model\Windows',
+                    'property' => 'windowsMaterial',
                 ],
             ]
         );
@@ -226,14 +247,16 @@ class SalesUnitForm extends Form
             ]
         );
 
-//        $this->add([
-//            'name' => 'linkToPhoto',
-//            'type' => 'text',
-//            'options' => [
-//                'label' => 'Link do fotografii'
-//            ]
-//        ]);
-
+        $this->add([
+            'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
+            'name' => 'photos',
+            'options' => [
+                'label' => 'Link do zdjęcia',
+                'object_manager' => $this->getObjectManager(),
+                'target_class' => 'Notice\Model\Photo',
+                'property' => 'link',
+            ],
+        ]);
 
         $this->add([
             'name' => 'submit',

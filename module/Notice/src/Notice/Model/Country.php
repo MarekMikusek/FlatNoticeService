@@ -59,17 +59,15 @@ class Country
      */
     public function getOtodom()
     {
-        return $this->Otodom;
+        return $this->otodom;
     }
 
     /**
-     * @param mixed $Otodom
+     * @param mixed $otodom
      */
-    public function setOtodom($Otodom)
+    public function setOtodom($otodom)
     {
-        $this->Otodom = $Otodom;
+        $this->otodom = $otodom;
     }
-
-
 
 }

@@ -1,14 +1,21 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Marek
+ * Date: 2016-02-18
+ * Time: 11:29
+ */
 
 namespace Notice\Form;
 
-use Zend\Form\FOrm;
 
-class FloorForm extends Form
+use Zend\Form\Form;
+
+class ParkingForm extends Form
 {
     public function __construct($name = NULL)
     {
-        parent::__construct('floor');
+        parent::__construct('parking');
     }
 
     public function init()
@@ -19,26 +26,18 @@ class FloorForm extends Form
         ]);
 
         $this->add([
-            'name' => 'floor',
+            'name' => 'parkingName',
             'type'=>'text',
             'options'=>[
-                'label'=>'Piętro'
+                'label'=>'Nazwa'
             ]
         ]);
 
         $this->add([
-            'name'=>'otodom',
-            'type'=>'integer',
+            'name' => 'gumtree',
+            'type'=>'text',
             'options'=>[
-                'label'=>'Piętro wg Otodom'
-            ]
-        ]);
-
-        $this->add([
-            'name'=>'domiporta',
-            'type'=>'integer',
-            'options'=>[
-                'label'=>'Piętro wg Domiporta'
+                'label'=>'Nazwa Gumtree'
             ]
         ]);
 

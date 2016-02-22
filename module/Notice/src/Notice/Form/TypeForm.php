@@ -29,7 +29,7 @@ class TypeForm extends Form
         ]);
 
         $this->add([
-            'name'=>'nameOtodom',
+            'name'=>'otodom',
             'type'=>'text',
             'options'=>[
                 'label'=>'Nazwa OTODom'
@@ -37,10 +37,18 @@ class TypeForm extends Form
         ]);
 
         $this->add([
-            'name'=>'nameDomiporta',
+            'name'=>'domiporta',
             'type'=>'text',
             'options'=>[
                 'label'=>'Nazwa Domiporta'
+            ]
+        ]);
+
+        $this->add([
+            'name'=>'gumtree',
+            'type'=>'text',
+            'options'=>[
+                'label'=>'Nazwa Gumtree'
             ]
         ]);
 

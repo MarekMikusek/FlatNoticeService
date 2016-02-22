@@ -5,29 +5,28 @@ namespace Notice\Model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class building-material
- * @ORM\Entity
+ * Class PropertyUse
  * @package Notice\Model
+ * @ORM\Entity
  */
-class BuildingMaterial
+class PropertyUse
 {
     /**
-     * @ORM\Id
      * @ORM\Column(type="integer")
+     * @ORM\Id
      * @ORM\GeneratedValue
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $material;
+    protected $propertyUse;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="integer")
      */
-    public $otodom;
-
+    protected $otodom;
 
     /**
      * @return mixed
@@ -38,19 +37,27 @@ class BuildingMaterial
     }
 
     /**
-     * @return mixed
+     * @param mixed $id
      */
-    public function getMaterial()
+    public function setId($id)
     {
-        return $this->material;
+        $this->id = $id;
     }
 
     /**
-     * @param mixed $material
+     * @return mixed
      */
-    public function setMaterial($material)
+    public function getPropertyUse()
     {
-        $this->material = $material;
+        return $this->propertyUse;
+    }
+
+    /**
+     * @param mixed $propertyUse
+     */
+    public function setPropertyUse($propertyUse)
+    {
+        $this->propertyUse = $propertyUse;
     }
 
     /**
@@ -68,5 +75,6 @@ class BuildingMaterial
     {
         $this->otodom = $otodom;
     }
+
 
 }

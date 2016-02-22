@@ -237,16 +237,9 @@ class SiteForm extends Form
                 'id' => 'submitbutton'
             ]
         ]);
+
         $inputFilter = new InputFilter();
 
-        $inputFilter->add([
-            'name' => 'longitude',
-            'required' => false
-        ]);
-        $inputFilter->add([
-            'name' => 'latitude',
-            'required' => false,
-        ]);
 
         $this->setInputFilter($inputFilter);
     }

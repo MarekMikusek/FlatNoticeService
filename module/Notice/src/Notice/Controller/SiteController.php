@@ -37,16 +37,6 @@ class SiteController extends AbstractNoticeController
             $form->setData($post);
             if ($form->isValid()) {
                 $dataToAdd = $form->getData();
-
-                $element = $form->getBaseFieldset()->get('medias');
-                $values = $element->getValue();
-
-                foreach ($values as $mediaId){
-                    $results = $this->getRepository('Notice\Model\MediaSite')->findBy(['id'=>$mediaId]);
-                    $mediaEntity = array_pop($results);
-
-                }
-
                 $noticeService = $this->getServiceLocator()->get('NoticeService');
                 $noticeService->insertData($dataToAdd);
                 return $this->redirect()->toRoute('notice', ['controller' => $this->controllerName, 'action' => 'index']);
@@ -92,12 +82,11 @@ class SiteController extends AbstractNoticeController
         $request = $this->getRequest();
         $dataToDelete = $this->getRepository("Notice\\Model\\" . $this->entityName)->find($id);
         if ($request->isPost()) {
-            $del = $request->getPost('del', 'No');
-            if ($del == "Yes") {
+            $del = $request->getPost('del', 'Nie');
+            if ($del == "Tak") {
                 $noticeService = $this->getServiceLocator()->get('NoticeService');
                 $noticeService->deleteData($dataToDelete);
                 $this->flashMessenger()->addMessage('Usunięto!');
-                var_dump($this->controllerName);
                 return $this->redirect()->toRoute('notice',
                     ['controller' => $this->controllerName, 'action' => 'index']);
             }

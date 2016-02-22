@@ -34,6 +34,11 @@ class Type
     public $domiporta;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    public $gumtree;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -65,36 +70,53 @@ class Type
         $this->name = $name;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getNameOtodom()
-    {
-        return $this->nameOtodom;
-    }
-
-    /**
-     * @param mixed $nameOtodom
-     */
-    public function setNameOtodom($nameOtodom)
-    {
-        $this->nameOtodom = $nameOtodom;
-    }
 
     /**
      * @return mixed
      */
-    public function getNameDomiporta()
+    public function getOtodom()
     {
-        return $this->nameDomiporta;
+        return $this->otodom;
     }
 
     /**
-     * @param mixed $nameDomiporta
+     * @param mixed $otodom
      */
-    public function setNameDomiporta($nameDomiporta)
+    public function setOtodom($otodom)
     {
-        $this->nameDomiporta = $nameDomiporta;
+        $this->otodom = $otodom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDomiporta()
+    {
+        return $this->domiporta;
+    }
+
+    /**
+     * @param mixed $domiporta
+     */
+    public function setDomiporta($domiporta)
+    {
+        $this->domiporta = $domiporta;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGumtree()
+    {
+        return $this->gumtree;
+    }
+
+    /**
+     * @param mixed $gumtree
+     */
+    public function setGumtree($gumtree)
+    {
+        $this->gumtree = $gumtree;
     }
 
 

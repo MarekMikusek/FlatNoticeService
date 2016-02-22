@@ -269,12 +269,12 @@ class Country extends \Notice\Model\Country implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setOtodom($Otodom)
+    public function setOtodom($otodom)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOtodom', array($Otodom));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOtodom', array($otodom));
 
-        return parent::setOtodom($Otodom);
+        return parent::setOtodom($otodom);
     }
 
 }

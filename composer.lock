@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cd49c297907627a3a506f8f61e2d6a9c",
-    "content-hash": "c691c72010ed0aad445081dda7a09efe",
+    "hash": "aaa60ad3c541d8a881c679b7b1a6ae62",
+    "content-hash": "999dcac10ffedddeb6d76e924fcc28f6",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1096,6 +1096,54 @@
                 "object graph"
             ],
             "time": "2015-11-07 22:20:37"
+        },
+        {
+            "name": "nicolab/php-ftp-client",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nicolab/php-ftp-client.git",
+                "reference": "ad954c9f221531a4e2e9db6a2d408f2c735c607f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nicolab/php-ftp-client/zipball/ad954c9f221531a4e2e9db6a2d408f2c735c607f",
+                "reference": "ad954c9f221531a4e2e9db6a2d408f2c735c607f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "FtpClient": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Tallefourtane",
+                    "email": "dev@nicolab.net",
+                    "homepage": "http://nicolab.net"
+                }
+            ],
+            "description": "A flexible FTP and SSL-FTP client for PHP. This lib provides helpers easy to use to manage the remote files.",
+            "homepage": "https://github.com/Nicolab/php-ftp-client",
+            "keywords": [
+                "file",
+                "ftp",
+                "helper",
+                "lib",
+                "server",
+                "sftp",
+                "ssl",
+                "ssl-ftp"
+            ],
+            "time": "2014-12-13 14:27:17"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
