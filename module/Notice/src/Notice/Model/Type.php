@@ -26,12 +26,12 @@ class Type
     /**
      * @ORM\Column(type="text")
      */
-    public $nameOtodom;
+    public $otodom;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $nameDomiporta;
+    public $domiporta;
 
     /**
      * @return mixed

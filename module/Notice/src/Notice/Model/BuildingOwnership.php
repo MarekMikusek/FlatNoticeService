@@ -9,25 +9,24 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @package Notice\Model
  */
-class BuildingMaterial
+class BuildingOwnership
 {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    public $id;
+    private $id;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $material;
+    private $ownership;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $nameOtodom;
-
+    private $nameOtodom;
 
     /**
      * @return mixed
@@ -56,6 +55,22 @@ class BuildingMaterial
     /**
      * @return mixed
      */
+    public function getOwnership()
+    {
+        return $this->ownership;
+    }
+
+    /**
+     * @param mixed $ownership
+     */
+    public function setOwnership($ownership)
+    {
+        $this->ownership = $ownership;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getNameOtodom()
     {
         return $this->nameOtodom;
@@ -68,6 +83,5 @@ class BuildingMaterial
     {
         $this->nameOtodom = $nameOtodom;
     }
-
 
 }

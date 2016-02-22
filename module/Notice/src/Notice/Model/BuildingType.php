@@ -26,6 +26,11 @@ class BuildingType
     public $type;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    public $nameOtodom;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -49,5 +54,20 @@ class BuildingType
         $this->type = $type;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getNameOtodom()
+    {
+        return $this->nameOtodom;
+    }
+
+    /**
+     * @param mixed $nameOtodom
+     */
+    public function setNameOtodom($nameOtodom)
+    {
+        $this->nameOtodom = $nameOtodom;
+    }
 
 }

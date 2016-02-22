@@ -5,13 +5,11 @@ namespace Notice\Form;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 
-class BuildingTypeForm extends Form
+class BuildingOwnershipForm extends Form
 {
-    protected $objectManager;
-
     public function __construct($name = NULL)
     {
-        parent::__construct('buildingType');
+        parent::__construct('building-ownership');
     }
 
     public function init()
@@ -22,33 +20,33 @@ class BuildingTypeForm extends Form
         ]);
 
         $this->add([
-            'name' => 'type',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Rodzaj nieruchomości'
+            'name' => 'ownership',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Rodzaj własności'
             ]
         ]);
 
         $this->add([
             'name' => 'nameOtodom',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Rodzaj nieruchomości Otodom'
+            'type' => 'text',
+            'options' => [
+                'label' => 'Nazwa wg Otodom'
             ]
         ]);
 
         $this->add([
-            'name'=>'submit',
-            'type'=>'Submit',
-            'attributes'=>[
-                'value'=>'Go',
-                'id'=>'submitbutton'
+            'name' => 'submit',
+            'type' => 'Submit',
+            'attributes' => [
+                'value' => 'Go',
+                'id' => 'submitbutton'
             ]
         ]);
 
         $inputFilter = new InputFilter();
         $inputFilter->add([
-            'name' => 'type',
+            'name' => 'material',
             'required' => true,
             'filters' => [
                 ['name' => 'StripTags'],
@@ -68,5 +66,4 @@ class BuildingTypeForm extends Form
         ]);
         $this->setInputFilter($inputFilter);
     }
-
 }

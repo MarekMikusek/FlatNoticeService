@@ -13,7 +13,7 @@ use Zend\InputFilter\InputFilter;
 
 class SalesUnitForm extends Form
 {
-    protected    $objectManager;
+    protected $objectManager;
 
     public
     function __construct($name = NULL)
@@ -30,14 +30,22 @@ class SalesUnitForm extends Form
         ]);
 
         $this->add([
-            'name'=>'isNew',
-            'type'=>'hidden'
+            'name' => 'toBeUpdated',
+            'type' => 'hidden'
+        ]);
+
+        $this->add([
+            'name' => 'offerNumber',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Numer oferty'
+            ]
         ]);
 
         $this->add(
             [
-                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
                 'name' => 'user',
+                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
                 'options' => [
                     'label' => 'Użytkownik',
                     'object_manager' => $this->getObjectManager(),
@@ -48,18 +56,29 @@ class SalesUnitForm extends Form
         );
 
         $this->add([
-            'name'=>'title',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Nazwa obiektu'
+            'name' => 'type',
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'options' => [
+                'label' => 'Typ nieruchomości',
+                'object_manager' => $this->getObjectManager(),
+                'target_class' => 'Notice\Model\Type',
+                'property' => 'name',
             ]
         ]);
 
         $this->add([
-            'name'=>'price',
-            'type'=>'number',
-            'options'=>[
-                'label'=>'Cena'
+            'name' => 'title',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Nazwa obiektu'
+            ]
+        ]);
+
+        $this->add([
+            'name' => 'price',
+            'type' => 'number',
+            'options' => [
+                'label' => 'Cena'
             ]
         ]);
 
@@ -85,9 +104,17 @@ class SalesUnitForm extends Form
         ]);
 
         $this->add([
+            'name' => 'landArea',
+            'type' => 'number',
+            'options' => [
+                'label' => 'Powierzchnia działki',
+            ]
+        ]);
+
+        $this->add([
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'name' => 'floor',
-            'required'=>true,
+            'required' => true,
             'options' => [
                 'label' => 'Piętro',
                 'object_manager' => $this->getObjectManager(),
@@ -97,7 +124,7 @@ class SalesUnitForm extends Form
         ]);
 
         $this->add([
-            'name' => 'noOfRooms',
+            'name' => 'numberOfRooms',
             'type' => 'number',
             'options' => [
                 'label' => 'Ilość pokoi'
@@ -105,7 +132,7 @@ class SalesUnitForm extends Form
         ]);
 
         $this->add([
-            'name' => 'noOfBathrooms',
+            'name' => 'numberOfBathrooms',
             'type' => 'number',
             'options' => [
                 'label' => 'Ilość łazienek'
@@ -149,6 +176,17 @@ class SalesUnitForm extends Form
             ]
         );
 
+        $this->add([
+            'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+            'name' => 'noise',
+            'options' => [
+                'label' => 'Poziom hałasu',
+                'object_manager' => $this->getObjectManager(),
+                'target_class' => 'Notice\Model\Noise',
+                'property' => 'domiporta',
+            ],
+        ]);
+
         $this->add(
             [
                 'type' => 'DoctrineModule\Form\Element\ObjectSelect',
@@ -156,24 +194,37 @@ class SalesUnitForm extends Form
                 'options' => [
                     'label' => 'Kategoria OTO Dom',
                     'object_manager' => $this->getObjectManager(),
-                    'target_class' => 'notice\Model\CategoryOtodom',
+                    'target_class' => 'Notice\Model\CategoryOtodom',
                     'property' => 'categoryName',
                 ],
             ]
         );
-//
-//        $this->add(
-//            [
-//                'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
-//                'name' => 'mediaSalesUnit',
-//                'options' => [
-//                    'label' => 'Dostępne media',
-//                    'object_manager' => $this->getObjectManager(),
-//                    'target_class' => 'Notice\Model\MediaSalesUnit',
-//                    'property' => 'mediaName',
-//                ],
-//            ]
-//        );
+
+        $this->add(
+            [
+                'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
+                'name' => 'medias',
+                'options' => [
+                    'label' => 'Dostępne media',
+                    'object_manager' => $this->getObjectManager(),
+                    'target_class' => 'Notice\Model\Medium',
+                    'property' => 'medium',
+                ],
+            ]
+        );
+
+        $this->add(
+            [
+                'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
+                'name' => 'extras',
+                'options' => [
+                    'label' => 'Dodatki',
+                    'object_manager' => $this->getObjectManager(),
+                    'target_class' => 'Notice\Model\Extra',
+                    'property' => 'extras',
+                ],
+            ]
+        );
 
 //        $this->add([
 //            'name' => 'linkToPhoto',

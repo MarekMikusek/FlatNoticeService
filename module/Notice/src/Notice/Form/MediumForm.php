@@ -2,13 +2,14 @@
 
 namespace Notice\Form;
 
+
 use Zend\Form\Form;
 
-class DistrictForm extends Form
+class MediasForm extends Form
 {
     public function __construct($name = NULL)
     {
-        parent::__construct('district');
+        parent::__construct('medias');
     }
 
     public function init()
@@ -19,26 +20,10 @@ class DistrictForm extends Form
         ]);
 
         $this->add([
-            'name' => 'districtName',
+            'name' => 'media',
             'type'=>'text',
             'options'=>[
-                'label'=>'Powiat'
-            ]
-        ]);
-
-        $this->add([
-            'name' => 'otodom',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Nazwa Otodom'
-            ]
-        ]);
-
-        $this->add([
-            'name' => 'domiporta',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Nazwa Domiporta'
+                'label'=>'Nazwa medium'
             ]
         ]);
 

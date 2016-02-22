@@ -1,20 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * user: Konto
- * Date: 2016-02-02
- * Time: 12:15
- */
 
 namespace Notice\Form;
 
 use Zend\Form\Form;
 
-class ProvinceForm extends Form
+class ExtraForm extends Form
 {
     public function __construct($name = NULL)
     {
-        parent::__construct('province');
+        parent::__construct('extras');
     }
 
     public function init()
@@ -25,26 +19,34 @@ class ProvinceForm extends Form
         ]);
 
         $this->add([
-            'name' => 'provinceName',
+            'name' => 'extras',
             'type'=>'text',
             'options'=>[
-                'label'=>'Województwo'
+                'label'=>'Nazwa'
             ]
         ]);
 
         $this->add([
-            'name' => 'otodom',
+            'name' => 'flatOtodom',
             'type'=>'text',
             'options'=>[
-                'label'=>'Nazwa Otodom'
+                'label'=>'Oznaczenie Otodom/mieszkanie'
             ]
         ]);
 
         $this->add([
-            'name' => 'domiporta',
+            'name' => 'houseOtodom',
             'type'=>'text',
             'options'=>[
-                'label'=>'Nazwa Domiporta'
+                'label'=>'Oznaczenie Otodom/dom'
+            ]
+        ]);
+
+        $this->add([
+            'name' => 'commercialOtodom',
+            'type'=>'text',
+            'options'=>[
+                'label'=>'Oznaczenie Otodom/lokal'
             ]
         ]);
 
@@ -57,5 +59,4 @@ class ProvinceForm extends Form
             ]
         ]);
     }
-
 }

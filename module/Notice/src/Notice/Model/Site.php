@@ -78,7 +78,7 @@ class Site
      * @ORM\ManyToOne(targetEntity="categoryOtodom")
      * @ORM\JoinColumn(name="categoryOtodom",referencedColumnName="id")
      */
-    public $categotyIdOtodom;
+    public $categoryIdOtodom;
 
     /**
      * @ORM\Column(type="text")
@@ -96,6 +96,12 @@ class Site
     public $constructionYear;
 
     /**
+     * @ORM\ManyToOne(targetEntity="buildingOwnership")
+     * @ORM\JoinColumn(name="buildingOwnership", referencedColumnName="id")
+     */
+    public $buildingOwnership;
+
+    /**
      * @ORM\ManyToOne(targetEntity="floor")
      * @ORM\JoinColumn(name="numberOfFloors", referencedColumnName="id")
      */
@@ -103,33 +109,87 @@ class Site
 
     /**
      * @ORM\ManyToOne(targetEntity="heating")
-     * @ORM\JoinColumn(name="heating", referencedColumnName="id")
+     * @ORM\JoinTable(name="sites_heatings",
+     *     joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="heating_id", referencedColumnName="id")}
+     *     )
      */
-    public $heating;
-
-//    /**
-//     * @ORM\ManyToMany(targetEntity="mediaSite")
-//     * @ORM\JoinTable(name="sites_medias",
-//     *     joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
-//     *     inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
-//     *     )
-//     */
-//    public $medias;
-//
-//    /**
-//     * @ORM\ManyToMany(targetEntity="securityMask")
-//     * @ORM\JoinTable(name="sites_securities",
-//     *      joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
-//     *      inverseJoinColumns={@ORM\JoinColumn(name="security_id", referencedColumnName="id")}
-//     *  )
-//     */
-//    public $securities;
+    public $heatings;
 
     /**
-     * @ORM\ManyToOne(targetEntity="fence")
-     * @ORM\JoinColumn(name="fence", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="medium")
+     * @ORM\JoinTable(name="sites_medias",
+     *     joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
+     *     )
      */
-    public $fence;
+    public $medias;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="security")
+     * @ORM\JoinTable(name="sites_securities",
+     *      joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="security_id", referencedColumnName="id")}
+     *  )
+     */
+    public $securities;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="fence")
+     * @ORM\JoinTable(name="sites_fences",
+     *      joinColumns={@ORM\JoinColumn(name="site_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="fence_id", referencedColumnName="id")}
+     *     )
+     */
+    public $fences;
+
+    public function addHeatings(Collection $heatings){
+        foreach($heatings as $heating){
+            $this->heatings->add($heating);
+        }
+    }
+
+    public function removeHeatings(Collection $heatings){
+        foreach($heatings as $heating){
+            $this->heatings->removeElement($heating);
+        }
+    }
+
+    public function addMedias(Collection $medias){
+        foreach($medias as $medium){
+            $this->medias->add($medium);
+        }
+    }
+
+    public function removeMedias(Collection $medias){
+        foreach($medias as $medium){
+            $this->extras->removeElement($medium);
+        }
+    }
+
+    public function addSecurities(Collection $securities){
+        foreach($securities as $security){
+            $this->securities->add($security);
+        }
+    }
+
+    public function removeSecurities(Collection $securities){
+        foreach($securities as $security){
+            $this->securities->removeElement($security);
+        }
+    }
+
+    public function addFences(Collection $fences){
+        foreach($fences as $fence){
+            $this->fences->add($fence);
+        }
+    }
+
+    public function removeFences(Collection $fences){
+        foreach($fences as $fence){
+            $this->fences->removeElement($fence);
+        }
+    }
 
     public function __construct()
     {
@@ -316,22 +376,6 @@ class Site
     /**
      * @return mixed
      */
-    public function getCategotyIdOtodom()
-    {
-        return $this->categotyIdOtodom;
-    }
-
-    /**
-     * @param mixed $categotyIdOtodom
-     */
-    public function setCategotyIdOtodom($categotyIdOtodom)
-    {
-        $this->categotyIdOtodom = $categotyIdOtodom;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getRoofMaterial()
     {
         return $this->roofMaterial;
@@ -455,6 +499,38 @@ class Site
     public function setFence($fence)
     {
         $this->fence = $fence;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategoryIdOtodom()
+    {
+        return $this->categoryIdOtodom;
+    }
+
+    /**
+     * @param mixed $categoryIdOtodom
+     */
+    public function setCategoryIdOtodom($categoryIdOtodom)
+    {
+        $this->categoryIdOtodom = $categoryIdOtodom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBuildingOwnership()
+    {
+        return $this->buildingOwnership;
+    }
+
+    /**
+     * @param mixed $buildingOwnership
+     */
+    public function setBuildingOwnership($buildingOwnership)
+    {
+        $this->buildingOwnership = $buildingOwnership;
     }
 
 }

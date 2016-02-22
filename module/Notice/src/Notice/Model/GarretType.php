@@ -5,15 +5,12 @@ namespace Notice\Model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class district
- * @ORM\Entity
+ * Class GarretType
  * @package Notice\Model
+ * @ORM\Entity
  */
-
-class District
+class GarretType
 {
-    protected $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -24,17 +21,12 @@ class District
     /**
      * @ORM\Column(type="text")
      */
-    public $districtName;
+    public $typeName;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="integer")
      */
     public $otodom;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    public $domiporta;
 
     /**
      * @return mixed
@@ -55,17 +47,17 @@ class District
     /**
      * @return mixed
      */
-    public function getDistrictName()
+    public function getTypeName()
     {
-        return $this->districtName;
+        return $this->typeName;
     }
 
     /**
-     * @param mixed $districtName
+     * @param mixed $typeName
      */
-    public function setDistrictName($districtName)
+    public function setTypeName($typeName)
     {
-        $this->districtName = $districtName;
+        $this->typeName = $typeName;
     }
 
     /**
@@ -83,22 +75,5 @@ class District
     {
         $this->otodom = $otodom;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getDomiporta()
-    {
-        return $this->domiporta;
-    }
-
-    /**
-     * @param mixed $domiporta
-     */
-    public function setDomiporta($domiporta)
-    {
-        $this->domiporta = $domiporta;
-    }
-
 
 }

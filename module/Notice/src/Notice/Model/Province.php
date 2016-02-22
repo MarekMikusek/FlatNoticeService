@@ -28,12 +28,12 @@ class Province
     /**
      * @ORM\Column(type="text")
      */
-    public $nameOtodom;
+    public $otodom;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $nameDomiporta;
+    public $domiporta;
 
     /**
      * @return mixed
@@ -91,5 +91,36 @@ class Province
         $this->nameDomiporta = $nameDomiporta;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getOtodom()
+    {
+        return $this->otodom;
+    }
+
+    /**
+     * @param mixed $otodom
+     */
+    public function setOtodom($otodom)
+    {
+        $this->otodom = $otodom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDomiporta()
+    {
+        return $this->domiporta;
+    }
+
+    /**
+     * @param mixed $domiporta
+     */
+    public function setDomiporta($domiporta)
+    {
+        $this->domiporta = $domiporta;
+    }
 
 }

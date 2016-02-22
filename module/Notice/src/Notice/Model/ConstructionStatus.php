@@ -1,18 +1,22 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Marek
+ * Date: 2016-02-15
+ * Time: 13:18
+ */
 
 namespace Notice\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Country
+ * Class ConstructionStatus
  * @package Notice\Model
  * @ORM\Entity
  */
-class Country
+class ConstructionStatus
 {
-    protected $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -23,7 +27,7 @@ class Country
     /**
      * @ORM\Column(type="text")
      */
-    public $countryName;
+    public $statusName;
 
     /**
      * @ORM\Column(type="integer")
@@ -41,17 +45,17 @@ class Country
     /**
      * @return mixed
      */
-    public function getCountryName()
+    public function getStatusName()
     {
-        return $this->countryName;
+        return $this->statusName;
     }
 
     /**
-     * @param mixed $countryName
+     * @param mixed $statusName
      */
-    public function setCountryName($countryName)
+    public function setStatusName($statusName)
     {
-        $this->countryName = $countryName;
+        $this->statusName = $statusName;
     }
 
     /**
@@ -59,17 +63,16 @@ class Country
      */
     public function getOtodom()
     {
-        return $this->Otodom;
+        return $this->otodom;
     }
 
     /**
-     * @param mixed $Otodom
+     * @param mixed $otodom
      */
-    public function setOtodom($Otodom)
+    public function setOtodom($otodom)
     {
-        $this->Otodom = $Otodom;
+        $this->otodom = $otodom;
     }
-
 
 
 }

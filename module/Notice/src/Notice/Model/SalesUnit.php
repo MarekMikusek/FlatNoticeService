@@ -4,6 +4,7 @@ namespace Notice\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Class sales-unit
@@ -24,6 +25,11 @@ class SalesUnit
     /**
      * @ORM\Column(type="text")
      */
+    public $offerNumber;
+
+    /**
+     * @ORM\Column(type="text")
+     */
     public $title;
 
     /**
@@ -33,16 +39,32 @@ class SalesUnit
     public $user;
 
     /**
+     * @ORM\ManyToOne(targetEntity="type")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     */
+    public $type;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    public $price;
+
+    /**
      * @ORM\ManyToOne(targetEntity="site")
      * @ORM\JoinColumn(name="site_id", referencedColumnName="id")
      */
     public $site;
-//
-//    /** typ nieruchomości: mieszkanie, dom, itd
-//     * @ORM\ManyToOne(targetEntity="type")
-//     * @ORM\joinColumn(name="type", referencedColumnName="id")
-//     */
-//    public $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="constructionStatus")
+     * @ORM\JoinColumn(name="constructionStatus_id", referencedColumnName="id")
+     */
+    public $constructionStatus;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    public $landArea;
 
     /**
      * @ORM\Column(type="float")
@@ -52,12 +74,18 @@ class SalesUnit
     /**
      * @ORM\Column(type="smallint")
      */
-    public $noOfRooms;
+    public $numberOfRooms;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    public $noOfBathrooms;
+    public $numberOfBathrooms;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="GarretType")
+     * @ORM\JoinColumn(name="garretType_id", referencedColumnName="id")
+     */
+    public $garretType;
 
     /**
      * @ORM\Column(type="boolean")
@@ -75,7 +103,8 @@ class SalesUnit
     public $description;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\ManyToOne(targetEntity="floor")
+     * @ORM\JoinColumn(name="floor_id", referencedColumnName="id")
      */
     public $floor;
 
@@ -83,28 +112,59 @@ class SalesUnit
      * @ORM\Column(type="date")
      */
     protected $availableFrom;
-//
-//    /**
-//     * @ORM\ManyToMany(targetEntity="extras")
-//     * @ORM\JoinTable(name="sites_extras",
-//     *      joinColumns={@ORM\JoinColumn(name="salesUnit_id", referencedColumnName="id")},
-//     *      inverseJoinColumns={@ORM\JoinColumn(name="extras_id", referencedColumnName="id")}
-//     *  )
-//     */
-//    public $extras;
-//
-//    /**
-//     * @ORM\ManyToMany(targetEntity="mediaSalesUnit")
-//     * @ORM\JoinTable(name="salesunits_medias",
-//     *     joinColumns={@ORM\JoinColumn(name="salesunit_id", referencedColumnName="id")},
-//     *     inverseJoinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")}
-//     *     )
-//     */
-//    public $medias;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="noise")
+     * @ORM\JoinColumn(name="noise_id", referencedColumnName="id")
+     */
+    protected $noise;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="extra")
+     * @ORM\JoinTable(name="salesUnits_extras",
+     *      joinColumns={@ORM\JoinColumn(name="salesUnit_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="extra_id", referencedColumnName="id")}
+     *  )
+     */
+    public $extras;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="medium")
+     * @ORM\JoinTable(name="salesunits_medias",
+     *     joinColumns={@ORM\JoinColumn(name="salesunit_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="medium_id", referencedColumnName="id")}
+     *     )
+     */
+    public $medias;
+
+    public function addExtras(Collection $extras){
+        foreach($extras as $extra){
+            $this->extras->add($extra);
+        }
+    }
+
+    public function removeExtras(Collection $extras){
+        foreach($extras as $extra){
+            $this->extras->removeElement($extra);
+        }
+    }
+
+    public function addMedias(Collection $medias){
+        foreach($medias as $medium){
+            $this->medias->add($medium);
+        }
+    }
+
+    public function removeMedias(Collection $medias){
+        foreach($medias as $medium){
+            $this->medias->removeElement($medium);
+        }
+    }
 
     public function __construct()
     {
         $this->extras = new ArrayCollection();
+        $this->medias = new ArrayCollection();
     }
 
     /**
@@ -153,6 +213,22 @@ class SalesUnit
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConstructionStatus()
+    {
+        return $this->constructionStatus;
+    }
+
+    /**
+     * @param mixed $constructionStatus
+     */
+    public function setConstructionStatus($constructionStatus)
+    {
+        $this->constructionStatus = $constructionStatus;
     }
 
     /**
@@ -234,6 +310,22 @@ class SalesUnit
     public function setArea($area)
     {
         $this->area = $area;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLandArea()
+    {
+        return $this->landArea;
+    }
+
+    /**
+     * @param mixed $landArea
+     */
+    public function setLandArea($landArea)
+    {
+        $this->landArea = $landArea;
     }
 
     /**
@@ -346,6 +438,54 @@ class SalesUnit
     public function setAvailableFrom($availableFrom)
     {
         $this->availableFrom = $availableFrom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOfferNumber()
+    {
+        return $this->offerNumber;
+    }
+
+    /**
+     * @param mixed $offerNumber
+     */
+    public function setOfferNumber($offerNumber)
+    {
+        $this->offerNumber = $offerNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param mixed $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNoise()
+    {
+        return $this->noise;
+    }
+
+    /**
+     * @param mixed $noise
+     */
+    public function setNoise($noise)
+    {
+        $this->noise = $noise;
     }
 
 }

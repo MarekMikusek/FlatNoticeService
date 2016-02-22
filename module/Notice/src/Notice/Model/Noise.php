@@ -5,15 +5,15 @@ namespace Notice\Model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class building-material
+ * Class Noise
  * @ORM\Entity
  * @package Notice\Model
  */
-class BuildingMaterial
+class Noise
 {
     /**
-     * @ORM\Id
      * @ORM\Column(type="integer")
+     * @ORM\Id
      * @ORM\GeneratedValue
      */
     public $id;
@@ -21,13 +21,12 @@ class BuildingMaterial
     /**
      * @ORM\Column(type="text")
      */
-    public $material;
+    public $domiporta;
 
     /**
      * @ORM\Column(type="text")
      */
-    public $nameOtodom;
-
+    public $otodom;
 
     /**
      * @return mixed
@@ -38,35 +37,43 @@ class BuildingMaterial
     }
 
     /**
-     * @return mixed
+     * @param mixed $id
      */
-    public function getMaterial()
+    public function setId($id)
     {
-        return $this->material;
-    }
-
-    /**
-     * @param mixed $material
-     */
-    public function setMaterial($material)
-    {
-        $this->material = $material;
+        $this->id = $id;
     }
 
     /**
      * @return mixed
      */
-    public function getNameOtodom()
+    public function getDomiporta()
     {
-        return $this->nameOtodom;
+        return $this->domiporta;
     }
 
     /**
-     * @param mixed $nameOtodom
+     * @param mixed $domiporta
      */
-    public function setNameOtodom($nameOtodom)
+    public function setDomiporta($domiporta)
     {
-        $this->nameOtodom = $nameOtodom;
+        $this->domiporta = $domiporta;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOtodom()
+    {
+        return $this->otodom;
+    }
+
+    /**
+     * @param mixed $otodom
+     */
+    public function setOtodom($otodom)
+    {
+        $this->otodom = $otodom;
     }
 
 

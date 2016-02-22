@@ -1,20 +1,21 @@
 <?php
 /**
  * Created by PhpStorm.
- * user: Konto
- * Date: 2016-02-02
- * Time: 12:15
+ * User: Marek
+ * Date: 2016-02-15
+ * Time: 13:21
  */
 
 namespace Notice\Form;
 
 use Zend\Form\Form;
 
-class ProvinceForm extends Form
+class ConstructionStatusForm extends Form
 {
+
     public function __construct($name = NULL)
     {
-        parent::__construct('province');
+        parent::__construct('constructionStatus');
     }
 
     public function init()
@@ -25,26 +26,18 @@ class ProvinceForm extends Form
         ]);
 
         $this->add([
-            'name' => 'provinceName',
+            'name' => 'statusName',
             'type'=>'text',
             'options'=>[
-                'label'=>'Województwo'
+                'label'=>'Stan budowy'
             ]
         ]);
 
         $this->add([
             'name' => 'otodom',
-            'type'=>'text',
+            'type'=>'integer',
             'options'=>[
-                'label'=>'Nazwa Otodom'
-            ]
-        ]);
-
-        $this->add([
-            'name' => 'domiporta',
-            'type'=>'text',
-            'options'=>[
-                'label'=>'Nazwa Domiporta'
+                'label'=>'Nazwa wg Otodom'
             ]
         ]);
 

@@ -3,15 +3,133 @@
 namespace Notice\Controller;
 
 use Notice\Model\SalesUnit;
+use Zend\Filter\Compress;
+use Zend\Form\Element\Date;
+use Zend\Form\Element\DateTime;
 use Zend\Form\Form;
 use Zend\View\Model\ViewModel;
 use Zend\Hydrator;
-use Zend\Json\Json as Json;
 
 class NoticeController extends AbstractNoticeController
 {
     private $entityName = 'Notice';
     private $controllerName = 'notice';
+
+    public function insertData($tag,$dataToInsert)
+    {
+        $tag = ucfirst($tag);
+        $return = '<'.$tag.'>\r\n';
+        foreach ($dataToInsert as $data) {
+            $return .= "<value>" . $data . "</value>\r\n";
+        }
+        $return.= '</'.$tag.'>\r\n';
+        return $return;
+    }
+
+    public function insertFlatDetailsOtodom($salesUnit)
+    {
+        $return =
+            "<FlatDetails>\r\n" .
+            $this->writeLn('BuildingType', $salesUnit->getType()->getNameOtodom()) .
+            $this->writeLn('BuildinMaterial', $salesUnit->getSite()->getBildingMaterial()->getNameOtodom()) .
+            $this->writeLn('BuildingOwnership', $salesUnit->getSite()->get) .
+            $this->writeLn('FloorNo', $salesUnit->getFloor()) .
+            $this->insertData('ExtraMask',$this->getExtras()) .
+            "</FlatDetails>\r\n";
+
+        return $return;
+    }
+
+    public function insertHouseDetailsOtodom($salesUnit)
+    {
+        $return =
+            "<FlatDetails>\r\n" .
+            $this->writeLn('BuildingType', $salesUnit->getType()->getNameOtodom()) .
+            $this->writeLn('TerrainArea', $salesUnit->getLandArea()).
+            $this->writeLn('ConstructionStatus', $salesUnit->getConstructionStatus()->getOtodom()).
+            $this->writeLn('BuildYear', $salesUnit->getSite()->getConstructionYear()).
+            $this->writeLn('Type',0).
+            $this->writeLn('FloorsNum',$salesUnit->getSite()->getNumberOfFloors()).
+            $this->writeLn('RoomsNum',$salesUnit->get()).
+            $this->writeLn('GarretType',$salesUnit->getGarretType()->getOtodom()).
+            $this->writeLn('WindowsType',$salesUnit->getWindows()->getOtodom()).
+
+            $this->writeLn('BuildingOwnership', $salesUnit->getSite()->get) .
+            $this->writeLn('FloorNo', $salesUnit->getFloor()) .
+            "<ExtrasMask>\r\n" .
+            $this->insertData($this->getExtras()) .
+            "</ExtrasMask>\r\n
+        </FlatDetails>\r\n";
+
+        return $return;
+    }
+
+    public function insertCommercialPropertyDetails($salesUnit)
+    {
+
+    }
+
+    public function prepareOneOfferForOtodomAction(SalesUnit $salesUnit)
+    {
+        $offerContent =
+            "<Insertion>\r\n" .
+            $this->writeLn('ID', $salesUnit->getOfferNumber()) .
+            $this->writeLn('Action', 0) .
+            $this->writeLn('Country', $salesUnit->getSite()->getCountry()->getOtodom()) .
+            $this->writeLn('Province', $salesUnit->getSite()->getProvince()->getOtodom()) .
+            $this->writeLn('City', $salesUnit->getSite()->getCity()) .
+            $this->writeLn('Quarter', $salesUnit->getSite()->getQuarter()) .
+            $this->writeLn('Street', $salesUnit->getSite()->getStreet()) .
+            $this->writeLn('Price', $salesUnit->getPrice()) .
+            $this->writeLn('PriceCurrency', 1) .
+            $this->writeLn('Area', $salesUnit->getArea()) .
+            $this->writeLn('MarketType', 0) .
+            $this->writeLn('ObjectName', $salesUnit->getType()->getNameOtodom()) .
+            $this->writeLn('OfferType', 0) .
+            $this->writeLn('Agent', $salesUnit->getUser()->getLicence());
+        switch ($salesUnit->getType()->getName()) {
+            case 'mieszkanie':
+                $this->insertFlatDetailsOtodom($salesUnit);
+                break;
+            case 'dom':
+                $this->insertHouseDetailsOtodom($salesUnit);
+                break;
+            case 'lokal użytkowy':
+                $this->insertCommercialPropertyDetails($salesUnit);
+                break;
+        };
+
+
+//            $this->writeLn('',$salesUnit->).
+//            $this->writeLn('',$salesUnit->).
+//            $this->writeLn('',$salesUnit->).
+//            $this->writeLn('',$salesUnit->).
+//
+//            "</Insertion>"
+
+
+        return $offerContent;
+    }
+
+    public function prepareWholeFileForOtodom()
+    {
+        $unitsToAdd = $this->getRepository("Notice\\Model\\SalesUnit")->findBy(['isNew' => true]);
+        $fileContent = '<?xml version="1.0" encoding="utf-8" ?>
+            <otoDom>
+                <Agency>marek@thtg.pl</Agency>
+                <Date>' . $this->getCurrentDate() . '</Date>
+                <ImportType>full</ImportType>
+                <Insertions>';
+        $fileContent .= '';
+        foreach ($unitsToAdd as $unit) {
+            $fileContent .= $this->prepareOneOfferForOtodom($unit);
+        }
+        $fileContent .= '</Insertion>\r\n
+                </Insertions>\r\n
+            </otoDom>';
+        var_dump($fileContent);
+        die();
+    }
 
     public function sendToOtodom($testData)
     {
@@ -222,7 +340,7 @@ class NoticeController extends AbstractNoticeController
     public function headerDomiporta()
     {
         return
-'<?xml version="1.0" encoding="UTF-8"?>
+            '<?xml version="1.0" encoding="UTF-8"?>
 <Domiporta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespacesSchemaLocation="domiporta.xsd">
    <Informacje>
       <RodzajPaczki>przyrost</RodzajPaczki>
@@ -233,17 +351,65 @@ class NoticeController extends AbstractNoticeController
       <Nieruchomości>';
     }
 
-    public function prepareOfferForDomiporta(SalesUnit $salesUnit)
+    public function prepareOneOfferForDomiporta(SalesUnit $salesUnit)
     {
-        echo ('<Oferta>');
-        $this->writeLn('ID',$id);
-        echo ('</Oferta>');
+        return ('<Oferta>' .
+            $this->writeLn('ID', 1) .
+            $this->writeLn('Nr_oferty', $salesUnit->getOfferNumber()) .
+            $this->writeLn('KategoriaNazwa', $salesUnit->getType()->getNameDomiporta()) .
+            $this->writeLn('Operacja', 'sprzedaż') .
+            $this->writeLn('Cena', $salesUnit->getPrice()) .
+            $this->writeLn('Waluta', 'PLN') .
+            $this->writeLn('Do_megocjacji', 'false') .
+            $this->writeLn('Ulica', $salesUnit->getSite()->getStreet()) .
+            $this->writeLn('Dzielnica', $salesUnit->getSite()->getQuarter()) .
+            $this->writeLn('Miasto', $salesUnit->getSite()->getCity()) .
+            $this->writeLn('Gmina', '') .
+            $this->writeLn('Powiat', $salesUnit->getSite()->getDistrict()) .
+            $this->writeLn('Województwo', $salesUnit->getSite()->getProvince()->domiporta) .
+            $this->writeLn('Agent', $salesUnit->getUser()->getUserName() . $salesUnit->getUser()->getPhone()) .
+            $this->writeLn('Nr_licencji', $salesUnit->getUser()->getLicence()) .
+            $this->writeLn('Powierzchnia', $salesUnit->getArea()) .
+            $this->writeLn('Liczba_łazienek', $salesUnit->getNoOfBathrooms()) .
+            $this->writeLn('Liczba_pieter', $salesUnit->getSite()->getNumberOfFloors()->floor) .
+            $this->writeLn('Pietro', $salesUnit->getFloor()->getFloor()) .
+            $this->writeLn('Opis', $salesUnit->getDescription()) .
+            $this->writeLn('Rok', $salesUnit->getSite()->getConstructionYear()) .
+            $this->writeLn('Material', 245) .//TODO sprawdzić bibliotekę
+            $this->writeLn('Glosnosc', $salesUnit->getNoise()->getDomiporta()) .
+            "<Zdjecia>" .
+            "</Zdjecia>" .
+            "</Oferta>");
+    }
+
+    public function prepareWholeFileForDomiportaAction()
+    {
+        $unitsToAdd = $this->getRepository("Notice\\Model\\SalesUnit")->findBy(['isNew' => true]);
+
+        $fileContent = '';
+        $fileContent .= $this->headerDomiporta();
+        foreach ($unitsToAdd as $unit) {
+            $fileContent .= $this->prepareOneOfferForDomiporta($unit);
+        }
+        $fileContent .= $this->footerDomiporta();
+        //$fileName = __DIR__.'notices/domiporta.zip';
+        //$filter = new Compress('zip');
+        // return $filter->filter($fileContent);
+        return new ViewModel($fileContent);
+    }
+
+    public function getCurrentDate()
+    {
+        $date = new DateTime('NOW');
+        $date->setFormat('y-m-j');
+        return $date;
+
     }
 
     public function footerDomiporta()
     {
         return
-'      </Nieruchomości>
+            '      </Nieruchomości>
    </Oferty>
 ';
     }
@@ -255,9 +421,10 @@ class NoticeController extends AbstractNoticeController
         $this->footerDomiporta();
     }
 
+
     public function writeLn($tag, $content)
     {
-        return "<".$tag.">".$content."</".$tag.">";
+        return "<" . $tag . ">" . $content . "</" . $tag . ">\r\n";
     }
 
     public function sendToGumtreeAction()
@@ -292,7 +459,7 @@ class NoticeController extends AbstractNoticeController
     public function indexAction()
     {
         return new ViewModel([
-            'returnData' => $this->getRepository("Notice\\Model\\" . $this->entityName)->findAll()
+            'returnData' => $this->getRepository("Notice\\Model\\SalesUnit")->findAll()
         ]);
     }
 

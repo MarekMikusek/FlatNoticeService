@@ -107,6 +107,19 @@ class SiteForm extends Form
             ]
         ]);
 
+        $this->add(
+            [
+                'type' => 'DoctrineModule\Form\Element\ObjectSelect',
+                'name' => 'buildingOwnership',
+                'options' => [
+                    'label' => 'Rodzaj własności',
+                    'object_manager' => $this->getObjectManager(),
+                    'target_class' => 'Notice\Model\BuildingOwnership',
+                    'property' => 'buildingOwnerShip',
+                ],
+            ]
+        );
+
         $this->add([
             'name' => 'latitude',
             'type' => 'text',
@@ -176,18 +189,18 @@ class SiteForm extends Form
             ],
         ]);
 
-//        $this->add(
-//            [
-//                'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
-//                'name' => 'mediaSite',
-//                'options' => [
-//                    'label' => 'Dostępne media',
-//                    'object_manager' => $this->getObjectManager(),
-//                    'target_class' => 'Notice\Model\MediaSite',
-//                    'property' => 'mediaName',
-//                ],
-//            ]
-//        );
+        $this->add(
+            [
+                'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
+                'name' => 'mediaSite',
+                'options' => [
+                    'label' => 'Dostępne media',
+                    'object_manager' => $this->getObjectManager(),
+                    'target_class' => 'Notice\Model\MediaSite',
+                    'property' => 'mediaName',
+                ],
+            ]
+        );
 
         $this->add(
             [

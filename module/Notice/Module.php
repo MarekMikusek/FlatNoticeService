@@ -5,7 +5,9 @@ namespace Notice;
 use Notice\Model\BuildingMaterial;
 use Notice\Model\BuildingType;
 use Notice\Model\CategoryOtodom;
+use Notice\Model\Extras;
 use Notice\Model\LocationOtodom;
+use Notice\Model\Medias;
 use Notice\Model\Notice;
 use Notice\Model\Province;
 use Notice\Model\RoofMaterial;
@@ -82,6 +84,16 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     return $form;
                 },
 
+                'Notice\Form\ExtraForm' => function ($sm) {
+                    $sl = $sm->getServiceLocator();
+                    $objectManager = $sl->get('Doctrine\ORM\EntityManager');
+
+                    $form = new ExtraForm();
+                    $form->setHydrator(new DoctrineHydrator($objectManager))
+                        ->setObject(new Extra());
+                    return $form;
+                },
+
                 'Notice\Form\LocationOtodomForm' => function ($sm) {
                     $sl = $sm->getServiceLocator();
                     $objectManager = $sl->get('Doctrine\ORM\EntityManager');
@@ -89,6 +101,16 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $form = new LocationOtodomForm();
                     $form->setHydrator(new DoctrineHydrator($objectManager))
                         ->setObject(new LocationOtodom());
+                    return $form;
+                },
+
+                'Notice\Form\MediumForm' => function ($sm) {
+                    $sl = $sm->getServiceLocator();
+                    $objectManager = $sl->get('Doctrine\ORM\EntityManager');
+
+                    $form = new MediumForm();
+                    $form->setHydrator(new DoctrineHydrator($objectManager))
+                        ->setObject(new Medium());
                     return $form;
                 },
 

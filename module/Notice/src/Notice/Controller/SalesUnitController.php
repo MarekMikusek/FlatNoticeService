@@ -35,7 +35,7 @@ class SalesUnitController  extends AbstractNoticeController
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $dataToAdd = $form->getData();
-                $form->isNew = true;
+                $dataToAdd->isNew = true;
                 $noticeService = $this->getServiceLocator()->get('NoticeService');
                 $noticeService->insertData($dataToAdd);
                 return $this->redirect()->toRoute('notice', ['controller' => $this->controllerName, 'action' => 'index']);

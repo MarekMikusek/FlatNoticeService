@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package Notice\Model
  * @ORM\Entity
  */
-class SecurityMask
+class Security
 {
     /**
      * @ORM\Id
